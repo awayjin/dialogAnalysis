@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <style type="text/css">
+        .dialog-outer{
+            margin-bottom: 20px;
+            /*text-shadow: 0 1px 0 #c3c0af;*/
+            box-shadow: 0 0px 1px #807f7c;
+            /*box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);;*/
+            background-color: #fbfbfb;
+            border: 1px solid #b8b5a6;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;font-size: 14px;
+            position: absolute; width: 330px; height: 140px; z-index: 1000; top: 55px; left: 835px;padding: 10px 10px 15px;
+        }
+        .dialog-title{ position: relative; font-family: 'Microsoft Yahei', Tahoma, Arial;}
+        .dialog-title .dialog-close{ position: absolute; right: 0px; _right: 10px; top: 0px;}
+        .dialog-content{ min-height: 81px; margin: 10px 0 5px; overflow: auto; height: 81px;}
+        .dialog-btn{ float: right;}
+        .dialog-btn button{ background-color: #f9f9f9; width: 68px; line-height: 26px; height: 29px; color: #000;text-shadow: 0 1px 0 #fff; font-weight: bold; border: 1px solid #3b79ed; border-radius: 3px; margin:0 2px; cursor: pointer;}
+        .dialog-close { display: inline-block;
+            float: right;
+            font-size: 20px;
+            *font-size: 25px;
+            font-weight: bold;
+            line-height: 20px;
+            color: #333;
+            text-shadow: 0 1px 0 #ffffff;
+            cursor: pointer;
+        }
+
+
+
+    </style>
+</head>
+<body>
+<div class='dialog-outer' data-alert='alert'>
+    <div class="dialog-title">
+        <span>对话框</span> <span class="dialog-close">&times;</span>
+    </div>
+
+    <div class="dialog-content">
+        内容
+    </div>
+
+    <div class="dialog-btn">
+        <button class="btn-ok">确定</button>
+        <button class="btn-cancel">取消</button>
+    </div>
+</div>
+
+
+<script>
+/*
+ ///////
+ var dMask =".d-mask",
+ bodyWidth,
+ hCenter,
+ vTop;
+
+ $("body").append("<div class='d-mask' id='opacity2'></div>");
+
+ //居中，滚动条的20个像素
+ bodyWidth = $(document).width();
+ hCenter = (bodyWidth- truthEle.width())/2;
+ vTop = $(document).scrollTop() + 20; //滚动条滚动的距离
+
+ truthEle.css({
+ top: vTop,
+ left: hCenter
+ });
+*/
+var pur = {};
+    pur.alert = function(message){
+        var msg = message,
+                _html = "",
+                doc = document,
+                body = doc.body,
+                wrap;
+
+        _html = '<div class="dialog-outer" data-alert="alert">' +
+                '<div class="dialog-title">' +
+                '<span>对话框</span>' +
+                '<span class="dialog-close">&times;</span>' +
+                '</div>' +
+                '<div class="dialog-content">内容</div>' +
+                '<div class="dialog-btn">' +
+                '<button class="dialog-ok">确定</button>' +
+                '<button class="dialog-cancel">取消</button>' +
+                '</div>' +
+                '</div>';
+
+        //创建最外层元素
+        wrap = doc.createElement("div");
+        wrap.innerHTML = _html;
+
+        //作为body后第一个元素插入
+        body.insertBefore(wrap, body.firstChild);
+
+
+        var i,
+                eles, //得到所有元素
+                elesLen,
+                obj = {},
+                name;
+
+        eles = wrap.getElementsByTagName("*");
+        elesLen = eles.length;
+
+
+        for(i=0; i<elesLen; i++){
+            name = eles[i].className.split("-")[1];
+            obj[name] = eles[i];
+        }
+
+        obj["close"].onclick = function(){
+            wrap.style.display = "none";
+        }
+
+        obj["cancel"].onclick = function(){
+            wrap.style.display = "none";
+        }
+
+
+    }
+
+    //pur.alert();
+</script>
+
+
+
+
+
+
+
+
+
+
+<div class="d"></div>
+
+</body>
+</html>

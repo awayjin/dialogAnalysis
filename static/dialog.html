@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>dialog</title>
+    <link rel="stylesheet" href="css/dialog.css"/>
+    <script>
+        var start = new Date().getTime();
+    </script>
+    <link rel="stylesheet" href="css/bootstrap-3.3.0.css"/>
+    <script>
+        var end = new Date().getTime();
+        console.log("time:", end-start, "毫秒");
+    </script>
+    <script src="../lib/sea-debug.js"></script>
+    <style>
+        .scrollable {
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            position: relative;
+            height: 100%;
+            background: #fff;
+        }
+
+        .wrap {
+            min-height: 100%;
+            padding-bottom: 1px;
+            background: #f5f5f5;
+            -webkit-transform: translateZ(0);
+        }
+
+        .pull-to-refresh {
+            height: 40px;
+            width: 100%;
+
+            position: absolute;
+            left: 0;
+            top: -40px;
+
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+<div class="scrollable">
+    <div class="pull-to-refresh">
+
+    </div>
+    <div class="wrap">
+        <!-- Content here -->
+        sdfsdfsdfsd
+    </div>
+</div>
+
+
+
+<script>
+/*
+* paths 一般是用在多域名的模块路径的情况下的。
+
+ 比如 seajs.use(['path1/a', 'path2/b'])
+
+ a 的位置是 www.path1.com/a.js ，b 的位置是 www.path2.com/b.js 。这种情况下，如果只有 base ，你就不好配了，用 paths 则可以解决。
+
+ paths: {
+ 'path1': 'http://www.path1.com',
+ 'path2': 'http://www.path2.com'
+ }
+* */
+    seajs.config({
+        //base路径是以当前页面加载为根路径
+        base: "./",
+        //paths怎样设置都没用
+        paths: {
+//            'dialog': "http://localhost:81/htmlComponent/src/",
+            'path': "http://localhost:81/htmlComponent/lib/"
+        },
+        alias: {
+            'dialog': "../src/dialog",
+            'jquery': "../lib/jquery",
+            "type": "../src/type",
+            "demo": "path/demo"
+        }
+
+    });
+
+    seajs.use("../src/dialog", function(dialog){
+        dialog({test: "a-test", cancel: true,  ok: function(){
+            alert(11);
+
+        }});
+       // dialog();
+    });
+
+    seajs.use("jquery", function($){
+        $('.scrollable').pullToRefresh({
+            callback: function() {
+                var def = $.Deferred();
+
+                setTimeout(function() {
+                    def.resolve();
+                }, 3000);
+
+                return def.promise();
+            }
+        });
+    });
+    seajs.use("demo");
+
+</script>
+
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="panel-title">测试</div>
+    </div>
+   <div class="panel-body">
+       <div class="row">
+           <div class="form-group">
+             <div class="col-md-12">
+                  <label class="col-md-2 control-label">按钮组</label>
+                  <div class="col-md-10">
+                      <button class="btn btn-primary">取消</button>
+                      <div class="btn btn-success">确定</div>
+                      <div class="btn btn-default">确定</div>
+                      <div class="btn btn-warning">警告</div>
+                  </div>
+              </div>
+           </div>
+       </div>
+   </div>
+</div>
+
+
+<div class="form-horizontal">
+    <div class="form-group">
+        <div class="col-md-12">
+            <div class="col-md-2 control-label">按钮组</div>
+            <div class="col-md-10">
+                <button class="btn btn-primary">取消</button>
+                <div class="btn btn-success">确定</div>
+                <div class="btn btn-default">确定</div>
+                <div class="btn btn-warning">警告</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-horizontal">
+    <div class="form-group">
+        <label class="col-md-2 control-label">
+            邮箱：
+        </label>
+        <div class="col-md-10">
+            <input type="email" class="form-control" placeholder="推荐使用126邮箱" ng-model="userInfo.email">
+        </div>
+    </div>
+</div>
+
+div.form-horizontal>div.form-group>label.col-md-2.control-label+div.col-md-10>input[type="email"].form-control
+
+ul>li.item-$*5
+<ul>
+    <li class="item-1"></li>
+    <li class="item-2"></li>
+    <li class="item-3"></li>
+    <li class="item-4"></li>
+    <li class="item-5"></li>
+</ul>
+
+ul>li.item-$*3>a{$11}
+<ul>
+    <li class="item-1"><a href="">111</a></li>
+    <li class="item-2"><a href="">211</a></li>
+    <li class="item-3"><a href="">311</a></li>
+</ul>
+
+
+<div class="modal-dialog">
+    <div class="modal-title">标题</div>
+    <div class="modal-content">
+        <p>内容</p>
+    </div>
+    <div class="modal-footer">
+        <div class="btn btn-success">确定</div>
+    </div>
+</div>
+
+<div class='dialog-outer' data-alert='alert' style="left: 20px">
+    <div class="dialog-title">
+        <span>对话框</span> <span class="dialog-close">&times;</span>
+    </div>
+
+    <div class="dialog-content">
+        内容
+    </div>
+
+    <div class="dialog-btn">
+        <button class="btn-ok">确定</button>
+        <button class="btn-cancel">取消</button>
+    </div>
+</div>
+</body>
+</html>
