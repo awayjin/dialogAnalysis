@@ -4,14 +4,9 @@
     <meta charset="UTF-8">
     <title>dialog</title>
     <link rel="stylesheet" href="css/dialog.css"/>
-    <script>
-        var start = new Date().getTime();
-    </script>
+   
     <link rel="stylesheet" href="css/bootstrap-3.3.0.css"/>
-    <script>
-        var end = new Date().getTime();
-        console.log("time:", end-start, "毫秒");
-    </script>
+   
     <script src="../lib/sea-debug.js"></script>
     <style>
         .scrollable {
@@ -77,9 +72,10 @@
         },
         alias: {
             'dialog': "../src/dialog",
+            '$': "../src/$",
             'jquery': "../lib/jquery",
             "type": "../src/type",
-            "demo": "path/demo"
+            //"demo": "./path/demo"
         }
 
     });
@@ -92,20 +88,8 @@
        // dialog();
     });
 
-    seajs.use("jquery", function($){
-        $('.scrollable').pullToRefresh({
-            callback: function() {
-                var def = $.Deferred();
 
-                setTimeout(function() {
-                    def.resolve();
-                }, 3000);
-
-                return def.promise();
-            }
-        });
-    });
-    seajs.use("demo");
+    //seajs.use("demo");
 
 </script>
 

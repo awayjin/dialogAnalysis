@@ -1,8 +1,13 @@
 define(function(require){
-   "use strict";
+   // "use strict";
 
     var type = require("type");
+	var $ = require("$");
+	//var jQuery = require("jquery");
+	
+	//jQuery("body").prepend("<h1>11 title</h1>");
 
+	
     var Dialog = function(config){
         //this.age = 25; //严格模式不通过
 
@@ -30,78 +35,65 @@ define(function(require){
         constructor: Dialog,
 
         //事件监听
-        addEvent: function(ele, type, callback){
+        //_addEvent: function(ele, type, callback) {
+        // 事件委托
+		_addEvent: function() {
 
-            if(ele.addEventListener){
-                ele.addEventListener(type, callback, false)
-            }else if(ele.attachEvent){
-                ele.attachEvent("on"+type, callback)
-            }
+			var that = this,
+				dom = that.dom;
+				
+			dom.wrap.bind("click", function(e) {
+				
+				var target = e.target;
+				
+				if(target == dom.close[0]) {
+					dom.wrap.remove();
+				}
+				
+			});
+		
         },
+		
+		// 关闭对话框
 
+		close: function () {
+			
+		},
+		
         _create: function(config){
-            var dom;
-            var wrap = this.wrap;
+            var dom;            
 
             //加载html结构
             this.dom = dom = this._innerHTML(config);
-            console.log(config);
-            dom.close[config.cancel === false ? "hide" : "show"];
+           
+		    this._addEvent();
+            
         },
         _innerHTML: function(data){
-            //创建最外层元素
+            // 创建最外层元素
             var wrap = this.wrap = document.createElement("div");
             var body = document.body;
-            //获得键值对,以便操作元素
+            // 获得键值对,以便操作元素
             var elements = wrap.getElementsByTagName("*"),
-                objEle = {},
+                dom = {},
                 key;
-
 
             wrap.innerHTML = this._html();
 
-
             for(var i=0; i<elements.length; i++){
                 key = elements[i].className.split("-")[1];
-                objEle[key] = elements[i];
+                if( key ) {
+					dom[key] = $(elements[i]);
+				}
             }
 
-
-            var dom = this.dom = objEle;
-
-            // 取消按钮
-            if(data.cancel){
-                var cancel = '<button class="dialog-cancel">取消</button>';
-                dom.btn.innerHTML = cancel;
-            }
-
-            console.log(Boolean(data.ok))
-
-            // 确定按钮
-            if (data.ok) {
-                var ele = document.createElement("button");
-                ele.className = "dialog-ok";
-                var text = document.createTextNode("确定");
-                ele.appendChild(text)
-                // var ok = '<button class="dialog-ok">确定</button>';
-                dom.btn.appendChild(ele);
-
-                // 回调确定按钮,并关闭
-                if (type.isFunction(data.ok)) {
-                    ele.onclick = data.ok;
-                }
-
-            }
-
-
-            dom.close.onclick = function(){
-                body.removeChild(wrap);
-            };
+            
+            dom.wrap = $(wrap);            
 
             //作为body后第一个元素插入
-            body.insertBefore(wrap, body.firstChild);
+            body.insertBefore(wrap, body.firstChild);	
 
-            return objEle;
+            return dom;
         },
 
         _html: function(config){
@@ -146,5 +138,34 @@ define(function(require){
          Dialog.prototype._create.prototype = Dialog.prototype;
          这样 Dialog.prototype._create就获得 Dialog.prototype上所有的方法
 
+		 
+		 // 取消按钮
+            if(data.cancel){
+                var cancel = '<button class="dialog-cancel">取消</button>';
+                dom.btn.innerHTML = cancel;
+            }
+
+            
+
+            // 确定按钮
+            if (data.ok) {
+                var ele = document.createElement("button");
+                ele.className = "dialog-ok";
+                var text = document.createTextNode("确定");
+                ele.appendChild(text)
+                // var ok = '<button class="dialog-ok">确定</button>';
+                dom.btn.appendChild(ele);
+
+                // 回调确定按钮,并关闭
+                if (type.isFunction(data.ok)) {
+                    ele.onclick = data.ok;
+                }
+
+            }
+
+
+            dom.close.onclick = function(){
+                body.removeChild(wrap);
+            };
 
 */

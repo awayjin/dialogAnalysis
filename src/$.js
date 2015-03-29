@@ -1,5 +1,5 @@
 define(function() {
-	var $ = window.art = function (selector, context) {
+	var $ = function (selector, context) {
             return new $.fn.constructor(selector, context);
         },
         quickExpr = /^(?:[^<]*(<[\w\W]+>)[^>]*$|#([\w\-]+)$)/,
