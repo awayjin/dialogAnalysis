@@ -54,6 +54,18 @@
 
 
 <script>
+var obj = {};
+function aa(i){    
+    obj[i] = i;
+    return obj;
+}
+
+for(var i=0; i<3; i++){
+  new aa(i);
+};
+
+
+
 /*
 * paths 一般是用在多域名的模块路径的情况下的。
 

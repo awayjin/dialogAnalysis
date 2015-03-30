@@ -1,6 +1,6 @@
 define(function() {
 	var $ = function (selector) {
-        return $.fn.constructor(selector);
+        return new $.fn.constructor(selector);
     };
 
     $.fn = $.prototype = {
@@ -17,7 +17,7 @@ define(function() {
         // 删除当前节点
         remove: function () {
             var ele = this[0];
-            ele.parent.removeChild(ele);
+            ele.parentNode.removeChild(ele);
             return this;
         },
 
