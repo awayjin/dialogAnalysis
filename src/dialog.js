@@ -4,10 +4,10 @@ define(function(require){
     var type = require("type");
 	var $ = require("$");
 	//var jQuery = require("jquery");
-	
+
 	//jQuery("body").prepend("<h1>11 title</h1>");
 
-	
+
     var Dialog = function(config){
         //this.age = 25; //严格模式不通过
 
@@ -38,36 +38,34 @@ define(function(require){
         //_addEvent: function(ele, type, callback) {
         // 事件委托
 		_addEvent: function() {
-
 			var that = this,
-				dom = that.dom;
-				
+				 dom = that.dom;
+
+            console.log(dom)
 			dom.wrap.bind("click", function(e) {
-				
 				var target = e.target;
-				
-				if(target == dom.close[0]) {
+                console.log(dom)
+				if ( target == dom.close[0] ) {
 					dom.wrap.remove();
 				}
-				
 			});
-		
+
         },
-		
+
 		// 关闭对话框
 
 		close: function () {
-			
+
 		},
-		
+
         _create: function(config){
-            var dom;            
+            var dom;
 
             //加载html结构
             this.dom = dom = this._innerHTML(config);
-           
+
 		    this._addEvent();
-            
+
         },
         _innerHTML: function(data){
             // 创建最外层元素
@@ -87,12 +85,13 @@ define(function(require){
 				}
             }
 
-            
-            dom.wrap = $(wrap);            
+
+            dom.wrap = $(wrap);
 
             //作为body后第一个元素插入
-            body.insertBefore(wrap, body.firstChild);	
+            body.insertBefore(wrap, body.firstChild);
 
+            console.log("3:", dom)
             return dom;
         },
 
@@ -131,6 +130,10 @@ define(function(require){
     1.不依赖任何库,调用简单
     2.适应当前，面向未来
 
+
+得到:
+    1.加深链式调用的理解--this
+
 知识点:
     1.直接调用模块Dialog，内部就已经进行new 对象操作了
     2. 在构造函数里new的对象是 Dialog原型上的函数 Dialog.prototype._create。
@@ -138,14 +141,14 @@ define(function(require){
          Dialog.prototype._create.prototype = Dialog.prototype;
          这样 Dialog.prototype._create就获得 Dialog.prototype上所有的方法
 
-		 
+
 		 // 取消按钮
             if(data.cancel){
                 var cancel = '<button class="dialog-cancel">取消</button>';
                 dom.btn.innerHTML = cancel;
             }
 
-            
+
 
             // 确定按钮
             if (data.ok) {
