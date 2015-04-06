@@ -87,7 +87,7 @@ for(var i=0; i<3; i++){
             'path': "http://localhost:81/htmlComponent/lib/"
         },
         alias: {
-            'dialog': "../src/dialog",
+            'dialog': "../src/dialogBC",
             '$': "../src/$",
             'jquery': "../lib/jquery",
             "type": "../src/type",
@@ -96,16 +96,23 @@ for(var i=0; i<3; i++){
 
     });
 
-    seajs.use("../src/dialog", function(dialog){
-        dialog({test: "a-test", cancel: true,  ok: function(){
-            alert(11);
+    seajs.use("dialog", function(dialog){
+	   
+		
+		dialog({ 
+			ok: function (){
+				alert(11)
+			}, 
+			cancel: function () {
+			
+			}
+		
+		})
+		
+	});
 
-        }});
-       // dialog();
-    });
 
-
-    //seajs.use("demo");
+    //seajs.use("dialog");
 
 </script>
 

@@ -10,7 +10,26 @@
 
 <script>
     //artDialog();
-	$.dialog();
+	$.dialog({
+		ok: function(){
+			$.dialog()
+		},
+		cancel: function() {
+		
+		}
+	});
+	
+	var a = function () {
+		console.log(this);
+		console.log(typeof this);
+		console.log(this instanceof Object);
+	
+	};
+	
+	a.call("abcd");
+	
+	new a()
+	a()
 </script>
 
 
