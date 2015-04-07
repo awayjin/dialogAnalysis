@@ -11,12 +11,12 @@
     position: absolute; z-index: 1000; top: 55px; left: 835px;padding: 10px 10px 15px; min-width: 70px;
 }
 .dialog-outer *, .dialog-outer{ box-sizing: content-box;}
-.dialog-outer, .dialog-btn button{ box-shadow: 1px 1px 0px #cbc9c9;}
+.dialog-outer, .dialog-buttons button{ box-shadow: 1px 1px 0px #cbc9c9;}
 .dialog-title{ position: relative; font-family: 'Microsoft Yahei', Tahoma, Arial;}
 .dialog-title .dialog-close{ position: absolute; right: 0px; _right: 10px; top: 0px;}
 .dialog-content{ padding: 10px 5px; margin: 10px 0 5px; overflow: auto; }
-.dialog-btn{ float: right; margin-left: 30px;}
-.dialog-btn button{ background-color: #f9f9f9; width: 68px; line-height: 26px; height: 29px; color: #000;text-shadow: 0 1px 0 #fff; font-weight: bold; border: 1px solid #3b79ed; border-radius: 2px; margin:0 2px; cursor: pointer;}
+.dialog-buttons{ float: right; margin-left: 30px;}
+.dialog-buttons button{ background-color: #f9f9f9; width: 68px; line-height: 26px; height: 29px; color: #000;text-shadow: 0 1px 0 #fff; font-weight: bold; border: 1px solid #3b79ed; border-radius: 2px; margin:0 2px; cursor: pointer;}
 .dialog-close { display: inline-block;
     float: right;
     font-size: 20px;

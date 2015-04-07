@@ -1,0 +1,22 @@
+{
+  "name": "dialogAnalysis",
+  "version": "1.0.0",
+  "description": "dialog analysis website",
+  "main": "jquery-1.11.0.min.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/awayjin/dialogAnalysis.git"
+  },
+  "author": "away-258246377@qq.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/awayjin/dialogAnalysis/issues"
+  },
+  "homepage": "https://github.com/awayjin/dialogAnalysis",
+  "devDependencies": {
+    "jsdoc": "^3.3.0-beta3"
+  }
+}

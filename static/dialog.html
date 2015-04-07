@@ -54,17 +54,6 @@
 
 
 <script>
-var obj = {};
-function aa(i){    
-    obj[i] = i;
-    return obj;
-}
-
-for(var i=0; i<3; i++){
-  new aa(i);
-};
-
-
 
 /*
 * paths 一般是用在多域名的模块路径的情况下的。
@@ -88,20 +77,25 @@ for(var i=0; i<3; i++){
         },
         alias: {
             'dialog': "../src/dialog",
-            '$': "../src/$",
+            'core': "../src/core",
             'jquery': "../lib/jquery",
-            "type": "../src/type",
-            //"demo": "./path/demo"
+            "type": "../src/type"
+            //, "demo": "./path/demo"
         }
 
     });
 
     seajs.use("../src/dialog", function(dialog){
-        dialog({test: "a-test", cancel: true,  ok: function(){
-            alert(11);
+        dialog({
+            test: "a-test",
+            ok: function (){
+                alert(11);
+            },
+            cancel: function () {
 
-        }});
-       // dialog();
+            }
+        });
+       dialog();
     });
 
 
@@ -132,48 +126,7 @@ for(var i=0; i<3; i++){
 </div>
 
 
-<div class="form-horizontal">
-    <div class="form-group">
-        <div class="col-md-12">
-            <div class="col-md-2 control-label">按钮组</div>
-            <div class="col-md-10">
-                <button class="btn btn-primary">取消</button>
-                <div class="btn btn-success">确定</div>
-                <div class="btn btn-default">确定</div>
-                <div class="btn btn-warning">警告</div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="form-horizontal">
-    <div class="form-group">
-        <label class="col-md-2 control-label">
-            邮箱：
-        </label>
-        <div class="col-md-10">
-            <input type="email" class="form-control" placeholder="推荐使用126邮箱" ng-model="userInfo.email">
-        </div>
-    </div>
-</div>
-
-div.form-horizontal>div.form-group>label.col-md-2.control-label+div.col-md-10>input[type="email"].form-control
-
-ul>li.item-$*5
-<ul>
-    <li class="item-1"></li>
-    <li class="item-2"></li>
-    <li class="item-3"></li>
-    <li class="item-4"></li>
-    <li class="item-5"></li>
-</ul>
-
-ul>li.item-$*3>a{$11}
-<ul>
-    <li class="item-1"><a href="">111</a></li>
-    <li class="item-2"><a href="">211</a></li>
-    <li class="item-3"><a href="">311</a></li>
-</ul>
 
 
 <div class="modal-dialog">
@@ -186,7 +139,7 @@ ul>li.item-$*3>a{$11}
     </div>
 </div>
 
-<div class='dialog-outer' data-alert='alert' style="left: 20px">
+<div class='dialog-outer' data-alert='alert' style="left: 20px; top: 300px;">
     <div class="dialog-title">
         <span>对话框</span> <span class="dialog-close">&times;</span>
     </div>
