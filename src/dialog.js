@@ -92,14 +92,13 @@ define(function (require) {
         // 确定和取消按钮
         button: function () {
             var dom = this.dom,
-                $buttons = dom.buttons[0];
+                $buttons = dom.buttons[0],
+                args = [].slice.call(arguments),    // 把类数组转换为数组
+                listener = this._listener = {}; // 事件回调组
 
-            var args = [].slice.call(arguments);    // 把类数组转换为数组
-            var listener = this._listener = {}; // 事件回调组
+            var val, i, value = "", id="", button, txt;
 
-            var val, value = "", id="", button, txt;
-
-            for (var i=0; i<args.length; i++) {
+            for (i=0; i<args.length; i++) {
                 val = args[i];
                 value = val.value;
                 id = val.id;
