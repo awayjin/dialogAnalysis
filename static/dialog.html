@@ -100,6 +100,23 @@
 
 
     //seajs.use("demo");
+    seajs.use("dialog", function(dialog){
+	   
+		
+		dialog({ 
+			ok: function (){
+				alert(11)
+			}, 
+			cancel: function () {
+			
+			}
+		
+		})
+		
+	});
+
+
+    //seajs.use("dialog");
 
 </script>
 

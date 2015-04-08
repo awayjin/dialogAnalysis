@@ -1,14 +1,12 @@
 define(function (require) {
     // "use strict";
-
     //var type = require("type");
-    var $ = require("core");
     //var jQuery = require("jquery");
 
+    var $ = require("core");
 
     var Dialog = function (config) {
         //this.age = 25; // 严格模式不通过
-
         config = config || {};
 
         // 合并默认配置参数
@@ -22,7 +20,7 @@ define(function (require) {
             config.button = [];
         }
 
-        // 确定按钮
+        // 确定
         if (config.ok) {
             config.button.push({
                 id: "ok",
@@ -31,18 +29,27 @@ define(function (require) {
             });
         }
 
+        // 取消
+        if (config.cancel) {
+            config.button.push({
+                id: "cancel",
+                value: config.cancelValue,
+                callback:  config.cancel
+            });
+        }
 
         return new Dialog.prototype._create(config); // #001 new一个对象
     };
 
     Dialog.defaults = {
         // 取消
-        cancel: null,
         hi: null,
         awa: null,
         // 确定
         ok: null,
-        okValue: "确定OK"
+        okValue: "确定OK",
+        cancel: null,
+        cancelValue: "取消"
     }
 
     Dialog.prototype = {
@@ -53,7 +60,7 @@ define(function (require) {
             // 加载html结构
             this.dom = dom = this._innerHTML(config);
 
-            this.button.call(config.button);
+            this.button.apply(this, config.button);
 
             this._addEvent();
         },
@@ -82,9 +89,35 @@ define(function (require) {
             return dom;
         },
 
-        button: function (data) {
-            var that = this;
-            var dom = this.dom;
+        // 确定和取消按钮
+        button: function () {
+            var dom = this.dom,
+                $buttons = dom.buttons[0];
+
+            var args = [].slice.call(arguments);    // 把类数组转换为数组
+            var listener = this._listener = {}; // 事件回调组
+
+            var val, value = "", id="", button, txt;
+
+            for (var i=0; i<args.length; i++) {
+                val = args[i];
+                value = val.value;
+                id = val.id;
+                button = document.createElement("button");
+                button.type = "button";
+                button.id = id;
+                txt = document.createTextNode(value);
+
+                // 事件回调
+                listener[id] = {}
+                listener[id].callback = val.callback;
+
+                button.appendChild(txt);
+                $buttons.appendChild(button);
+
+            }
+
+            return this;
 
         },
 
