@@ -118,6 +118,65 @@
     })
 
 
+    // 检查页面是否有重复id
+    function isRepeatId(){
+        var eles = document.getElementsByTagName("*");
+        var arr = []; // 重复id数组
+        var obj = {};
+        var id = ''; // 重复id
+
+        for (var i=0; i<eles.length; i++) {
+            id = eles[i].id;
+            if (id) {
+                // arr.push(id);
+                if ( obj[id] ) {
+                    console.log("重复id:", id, ", 第一个元素位置:" + obj[id], ", 重复元素位置:" + i);
+                    arr.push(id);
+                } else {
+
+                    obj[id] = i;
+                }
+            }
+
+        }
+
+        console.log(arr);
+
+    }
+
+    // 数组去重
+    function isRepeatArray(){
+
+        var arr = [];
+        var obj2 = {};
+        var arr2 = ["a", 232, 22, "a", 11, 22, "a", "sdfsd", "d", 11, "d"];
+
+
+        for (var i=0; i<arr2.length; i++) {
+            if ( !obj2[arr2[i]] ) {
+
+                arr.push(arr2[i]);
+                obj2[arr2[i]] = true;
+            }
+        }
+        return arr;
+    }
+
+    console.log(isRepeatArray());
+
+    /*
+    // 破坏性
+    Array.prototype.unique1 = function () {
+        var n = []; //一个新的临时数组
+        for (var i = 0; i < this.length; i++) //遍历当前数组
+        {
+            //如果当前数组的第i已经保存进了临时数组，那么跳过，
+            //否则把当前项push到临时数组里面
+            if (n.indexOf(this[i]) == -1) n.push(this[i]);
+        }
+        return n;
+    }
+    */
 </script>
 
 <!--

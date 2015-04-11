@@ -133,8 +133,9 @@ define(function (require) {
                 target = e.target || e.srcElement;
                 if (target == dom.close[0]) { // 关闭
                     that.close();
-                } else { // 确定 or 取消
-                    that._click(target.id);
+                } else {
+                    // 确定or取消
+                    target.id && that._click(target.id);
                 }
             });
 
