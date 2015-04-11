@@ -25,7 +25,7 @@ define(function (require) {
             config.button.push({
                 id: "ok",
                 value: config.okValue,
-                callback:  config.ok
+                callback: config.ok
             });
         }
 
@@ -34,7 +34,7 @@ define(function (require) {
             config.button.push({
                 id: "cancel",
                 value: config.cancelValue,
-                callback:  config.cancel
+                callback: config.cancel
             });
         }
 
@@ -47,7 +47,7 @@ define(function (require) {
         awa: null,
         // 确定
         ok: null,
-        okValue: "确定OK",
+        okValue: "确定",
         cancel: null,
         cancelValue: "取消"
     }
@@ -59,9 +59,9 @@ define(function (require) {
             var dom;
             // 加载html结构
             this.dom = dom = this._innerHTML(config);
-
+            // 确定 取消按钮添加
             this.button.apply(this, config.button);
-
+            // 绑定事件
             this._addEvent();
         },
 
@@ -72,11 +72,12 @@ define(function (require) {
             // 获得键值对,以便操作元素
             var elements = wrap.getElementsByTagName("*"),
                 dom = {},
-                key;
+                key,
+                i;
 
             wrap.innerHTML = this._html();
 
-            for (var i = 0; i < elements.length; i++) {
+            for (i = 0; i < elements.length; i++) {
                 key = elements[i].className.split("-")[1];
                 if (key) {
                     dom[key] = $(elements[i]);
@@ -96,9 +97,9 @@ define(function (require) {
                 args = [].slice.call(arguments),    // 把类数组转换为数组
                 listener = this._listener = {}; // 事件回调组
 
-            var val, i, value = "", id="", button, txt;
+            var val, i, value = "", id = "", button, txt;
 
-            for (i=0; i<args.length; i++) {
+            for (i = 0; i < args.length; i++) {
                 val = args[i];
                 value = val.value;
                 id = val.id;
@@ -123,22 +124,36 @@ define(function (require) {
         // 事件委托
         _addEvent: function () {
             var that = this,
-                dom = that.dom;
+                dom = that.dom,
+                target; // 目标元素
 
+            // 委托在最外层元素上
             dom.wrap.bind("click", function (e) {
-                that.close(e);
+                e = e || event;
+                target = e.target || e.srcElement;
+                if (target == dom.close[0]) { // 关闭
+                    that.close();
+                } else { // 确定 or 取消
+                    that._click(target.id);
+                }
             });
 
+            return this;
+        },
+
+        // 按钮回调触发
+        _click: function (id) {
+            var fn = this._listener[id] && this._listener[id].callback;
+            // 处理回调非函数 和回调里包含 return false不关闭
+            return typeof fn !== "function" || fn.call(this) !== false ?
+                this.close() :
+                this;
         },
 
         // 关闭对话框
-        close: function (e) {
+        close: function () {
             var dom = this.dom;
-            e = e || event;
-            var target = e.target || e.srcElement;
-            if (target == dom.close[0]) {
-                dom.wrap.remove();
-            }
+            dom.wrap.remove();
         },
 
         _html: function (config) {

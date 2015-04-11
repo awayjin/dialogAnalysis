@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="css/dialog.css"/>
     <link rel="stylesheet" href="css/bootstrap-3.3.0.css"/>
     <script src="../lib/sea-debug.js"></script>
+
+
 </head>
 <body>
 
@@ -36,6 +38,7 @@
             'dialog': "../src/dialog",
             'core': "../src/core",
             'jquery': "../lib/jquery",
+            "sizzle": "../lib/sizzle.js",
             "type": "../src/type"
             //, "demo": "./path/demo"
         }
@@ -47,30 +50,33 @@
             test: "a-test",
             ok: function (){
                 alert(11);
+                return false;
+
             },
             cancel: function () {
 
+                return false;
             }
         });
-       dialog();
+        dialog();
     });
 
 
-    //seajs.use("demo");
+    // seajs.use("demo");
     seajs.use("dialog", function(dialog){
 	   
 		
 		dialog({ 
 			ok: function (){
-				alert(11)
-			}, 
-			cancel: function () {
-			
-			}
+				alert(22);
+			},
+			cancel: 11
 		
 		})
 		
 	});
+
+
 
 
     //seajs.use("dialog");
@@ -100,6 +106,21 @@
 </div>
 
 
+<!--<script src="../lib/sizzle.js"></script>-->
+
+<script>
+
+    seajs.use(["core", "sizzle"], function (core, $) {
+        // var panel = document.getElementsByClassName("panel")[0];
+        core($(".panel")[0]).bind("click", function (e) {
+            this.remove();
+        });
+    })
+
+
+</script>
+
+<!--
 <div class="modal-dialog">
     <div class="modal-title">标题</div>
     <div class="modal-content">
