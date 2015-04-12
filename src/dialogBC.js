@@ -105,8 +105,6 @@ define(function(require){
 			this.button.apply(this, config.button);
 			// this.button(config.button);
 			
-		
-
 		    this._addEvent();
 
         },
@@ -118,7 +116,7 @@ define(function(require){
 			var args = [].slice.call(arguments);
 			var listener = this._listener = {};
 		
-			var val, vaule = "", id="", button, txt;
+			var val, value = "", id="", button, txt;
 			
 			for (var i=0; i<args.length; i++) {
 				val = args[i];
@@ -132,7 +130,6 @@ define(function(require){
 				// 事件回调
 				listener[id] = {}
 				listener[id].callback = val.callback;
-				
 				
 				button.appendChild(txt);
 				

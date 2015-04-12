@@ -2,69 +2,17 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>dialog</title>
     <link rel="stylesheet" href="css/dialog.css"/>
-   
     <link rel="stylesheet" href="css/bootstrap-3.3.0.css"/>
-   
     <script src="../lib/sea-debug.js"></script>
-    <style>
-        .scrollable {
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-            position: relative;
-            height: 100%;
-            background: #fff;
-        }
 
-        .wrap {
-            min-height: 100%;
-            padding-bottom: 1px;
-            background: #f5f5f5;
-            -webkit-transform: translateZ(0);
-        }
 
-        .pull-to-refresh {
-            height: 40px;
-            width: 100%;
-
-            position: absolute;
-            left: 0;
-            top: -40px;
-
-            z-index: -1;
-        }
-    </style>
-
-    <style>
-        html, body { position:relative; top: -14px; }
-    </style>
 </head>
 <body>
-<div class="scrollable">
-    <div class="pull-to-refresh">
-
-    </div>
-    <div class="wrap">
-        <!-- Content here -->
-        sdfsdfsdfsd
-    </div>
-</div>
-
-
 
 <script>
-var obj = {};
-function aa(i){    
-    obj[i] = i;
-    return obj;
-}
-
-for(var i=0; i<3; i++){
-  new aa(i);
-};
-
-
 
 /*
 * paths 一般是用在多域名的模块路径的情况下的。
@@ -87,29 +35,48 @@ for(var i=0; i<3; i++){
             'path': "http://localhost:81/htmlComponent/lib/"
         },
         alias: {
-            'dialog': "../src/dialogBC",
-            '$': "../src/$",
+            'dialog': "../src/dialog",
+            'core': "../src/core",
             'jquery': "../lib/jquery",
-            "type": "../src/type",
-            //"demo": "./path/demo"
+            "sizzle": "../lib/sizzle.js",
+            "type": "../src/type"
+            //, "demo": "./path/demo"
         }
 
     });
 
+    seajs.use("../src/dialog", function(dialog){
+        dialog({
+            test: "a-test",
+            ok: function (){
+                alert(11);
+                return false;
+
+            },
+            cancel: function () {
+
+                return false;
+            }
+        });
+        dialog();
+    });
+
+
+    // seajs.use("demo");
     seajs.use("dialog", function(dialog){
 	   
 		
 		dialog({ 
 			ok: function (){
-				alert(11)
-			}, 
-			cancel: function () {
-			
-			}
+				alert(22);
+			},
+			cancel: 11
 		
 		})
 		
 	});
+
+
 
 
     //seajs.use("dialog");
@@ -139,50 +106,80 @@ for(var i=0; i<3; i++){
 </div>
 
 
-<div class="form-horizontal">
-    <div class="form-group">
-        <div class="col-md-12">
-            <div class="col-md-2 control-label">按钮组</div>
-            <div class="col-md-10">
-                <button class="btn btn-primary">取消</button>
-                <div class="btn btn-success">确定</div>
-                <div class="btn btn-default">确定</div>
-                <div class="btn btn-warning">警告</div>
-            </div>
-        </div>
-    </div>
-</div>
+<!--<script src="../lib/sizzle.js"></script>-->
 
-<div class="form-horizontal">
-    <div class="form-group">
-        <label class="col-md-2 control-label">
-            邮箱：
-        </label>
-        <div class="col-md-10">
-            <input type="email" class="form-control" placeholder="推荐使用126邮箱" ng-model="userInfo.email">
-        </div>
-    </div>
-</div>
+<script>
 
-div.form-horizontal>div.form-group>label.col-md-2.control-label+div.col-md-10>input[type="email"].form-control
-
-ul>li.item-$*5
-<ul>
-    <li class="item-1"></li>
-    <li class="item-2"></li>
-    <li class="item-3"></li>
-    <li class="item-4"></li>
-    <li class="item-5"></li>
-</ul>
-
-ul>li.item-$*3>a{$11}
-<ul>
-    <li class="item-1"><a href="">111</a></li>
-    <li class="item-2"><a href="">211</a></li>
-    <li class="item-3"><a href="">311</a></li>
-</ul>
+    seajs.use(["core", "sizzle"], function (core, $) {
+        // var panel = document.getElementsByClassName("panel")[0];
+        core($(".panel")[0]).bind("click", function (e) {
+            this.remove();
+        });
+    })
 
 
+    // 检查页面是否有重复id
+    function isRepeatId(){
+        var eles = document.getElementsByTagName("*");
+        var arr = []; // 重复id数组
+        var obj = {};
+        var id = ''; // 重复id
+
+        for (var i=0; i<eles.length; i++) {
+            id = eles[i].id;
+            if (id) {
+                // arr.push(id);
+                if ( obj[id] ) {
+                    console.log("重复id:", id, ", 第一个元素位置:" + obj[id], ", 重复元素位置:" + i);
+                    arr.push(id);
+                } else {
+
+                    obj[id] = i;
+                }
+            }
+
+        }
+
+        console.log(arr);
+
+    }
+
+    // 数组去重
+    function isRepeatArray(){
+
+        var arr = [];
+        var obj2 = {};
+        var arr2 = ["a", 232, 22, "a", 11, 22, "a", "sdfsd", "d", 11, "d"];
+
+
+        for (var i=0; i<arr2.length; i++) {
+            if ( !obj2[arr2[i]] ) {
+
+                arr.push(arr2[i]);
+                obj2[arr2[i]] = true;
+            }
+        }
+        return arr;
+    }
+
+    console.log(isRepeatArray());
+
+    /*
+    // 破坏性
+    Array.prototype.unique1 = function () {
+        var n = []; //一个新的临时数组
+        for (var i = 0; i < this.length; i++) //遍历当前数组
+        {
+            //如果当前数组的第i已经保存进了临时数组，那么跳过，
+            //否则把当前项push到临时数组里面
+            if (n.indexOf(this[i]) == -1) n.push(this[i]);
+        }
+        return n;
+    }
+    */
+</script>
+
+<!--
 <div class="modal-dialog">
     <div class="modal-title">标题</div>
     <div class="modal-content">
@@ -193,7 +190,7 @@ ul>li.item-$*3>a{$11}
     </div>
 </div>
 
-<div class='dialog-outer' data-alert='alert' style="left: 20px">
+<div class='dialog-outer' data-alert='alert' style="left: 20px; top: 300px;">
     <div class="dialog-title">
         <span>对话框</span> <span class="dialog-close">&times;</span>
     </div>
@@ -207,5 +204,6 @@ ul>li.item-$*3>a{$11}
         <button class="btn-cancel">取消</button>
     </div>
 </div>
+-->
 </body>
 </html>
