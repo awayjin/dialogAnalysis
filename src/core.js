@@ -1,4 +1,4 @@
- define(function () {
+ define(function (require) {
 
      /**
       * js基础库
@@ -7,7 +7,15 @@
       * @module  js基础库
       */
 
+	// jQuery选择器  
+	var sizzle = require("sizzle");  	
+		  
     var $ = function (selector) {
+		
+		if (sizzle) {
+			// selector = sizzle(selector);
+		}
+		
         return new $.fn.constructor(selector);
     };
 

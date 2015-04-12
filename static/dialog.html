@@ -110,13 +110,22 @@
 
 <script>
 
-    seajs.use(["core", "sizzle"], function (core, $) {
+    /*
+	seajs.use(["core", "sizzle"], function (core, $) {
         // var panel = document.getElementsByClassName("panel")[0];
         core($(".panel")[0]).bind("click", function (e) {
             this.remove();
         });
     })
 
+	
+	*/
+	
+	seajs.use(["core"], function ($) {
+        $(".panel").bind("click", function (e) {
+            this.remove();
+        });
+    })
 
     // 检查页面是否有重复id
     function isRepeatId(){
@@ -133,7 +142,6 @@
                     console.log("重复id:", id, ", 第一个元素位置:" + obj[id], ", 重复元素位置:" + i);
                     arr.push(id);
                 } else {
-
                     obj[id] = i;
                 }
             }
