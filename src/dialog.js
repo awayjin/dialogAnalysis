@@ -203,33 +203,12 @@ define(function (require) {
  这样 Dialog.prototype._create就获得 Dialog.prototype上所有的方法
 
 
- // 取消按钮
- if(data.cancel){
- var cancel = '<button class="dialog-cancel">取消</button>';
- dom.btn.innerHTML = cancel;
- }
+ 
+ (1) 数组相关
+	 数组去重 检查页面重复ID
 
 
 
- // 确定按钮
- if (data.ok) {
- var ele = document.createElement("button");
- ele.className = "dialog-ok";
- var text = document.createTextNode("确定");
- ele.appendChild(text)
- // var ok = '<button class="dialog-ok">确定</button>';
- dom.btn.appendChild(ele);
 
- // 回调确定按钮,并关闭
- if (type.isFunction(data.ok)) {
- ele.onclick = data.ok;
- }
-
- }
-
-
- dom.close.onclick = function(){
- body.removeChild(wrap);
- };
 
  */
