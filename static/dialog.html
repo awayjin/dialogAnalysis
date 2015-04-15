@@ -14,24 +14,12 @@
 
 <script>
 
-/*
-* paths 一般是用在多域名的模块路径的情况下的。
-
- 比如 seajs.use(['path1/a', 'path2/b'])
-
- a 的位置是 www.path1.com/a.js ，b 的位置是 www.path2.com/b.js 。这种情况下，如果只有 base ，你就不好配了，用 paths 则可以解决。
-
- paths: {
- 'path1': 'http://www.path1.com',
- 'path2': 'http://www.path2.com'
- }
-* */
     seajs.config({
-        //base路径是以当前页面加载为根路径
+        // base路径是以当前页面加载为根路径
         base: "./",
-        //paths怎样设置都没用
+        // paths怎样设置都没用, 因为是路径,在alias时用
         paths: {
-//            'dialog': "http://localhost:81/htmlComponent/src/",
+           // 'dialog': "http://localhost:81/htmlComponent/src/",
             'path': "http://localhost:81/htmlComponent/lib/"
         },
         alias: {
@@ -49,14 +37,11 @@
         dialog({
             test: "a-test",
             ok: function (){
-                alert(11);
+                alert("不能关闭,因为返回了 false");
                 return false;
-
             },
-            cancel: function () {
-
-                return false;
-            }
+            okValue: "确定vb",
+            cancel: true
         });
         dialog();
     });
@@ -75,9 +60,6 @@
 		})
 		
 	});
-
-
-
 
     //seajs.use("dialog");
 
@@ -105,10 +87,16 @@
    </div>
 </div>
 
+<div class="panel" id="panel">
+    hi panel
+</div>
 
 <!--<script src="../lib/sizzle.js"></script>-->
 
 <script>
+
+
+    //alert(getClass("panel"));
 
     /*
 	seajs.use(["core", "sizzle"], function (core, $) {
@@ -120,70 +108,18 @@
 
 	
 	*/
-	
+
 	seajs.use(["core"], function ($) {
-        $(".panel").bind("click", function (e) {
-            this.remove();
+
+        var panel = document.getElementById("panel");
+        $(panel).bind("click", function (e) {
+            $(this).remove();
         });
     })
 
-    // 检查页面是否有重复id
-    function isRepeatId(){
-        var eles = document.getElementsByTagName("*");
-        var arr = []; // 重复id数组
-        var obj = {};
-        var id = ''; // 重复id
-
-        for (var i=0; i<eles.length; i++) {
-            id = eles[i].id;
-            if (id) {
-                // arr.push(id);
-                if ( obj[id] ) {
-                    console.log("重复id:", id, ", 第一个元素位置:" + obj[id], ", 重复元素位置:" + i);
-                    arr.push(id);
-                } else {
-                    obj[id] = i;
-                }
-            }
-
-        }
-
-        console.log(arr);
-
-    }
-
-    // 数组去重
-    function isRepeatArray(){
-
-        var arr = [];
-        var obj2 = {};
-        var arr2 = ["a", 232, 22, "a", 11, 22, "a", "sdfsd", "d", 11, "d"];
 
 
-        for (var i=0; i<arr2.length; i++) {
-            if ( !obj2[arr2[i]] ) {
-                arr.push(arr2[i]);
-                obj2[arr2[i]] = true;
-            }
-        }
-        return arr;
-    }
 
-    console.log(isRepeatArray());
-
-    /*
-    // 破坏性
-    Array.prototype.unique1 = function () {
-        var n = []; //一个新的临时数组
-        for (var i = 0; i < this.length; i++) //遍历当前数组
-        {
-            //如果当前数组的第i已经保存进了临时数组，那么跳过，
-            //否则把当前项push到临时数组里面
-            if (n.indexOf(this[i]) == -1) n.push(this[i]);
-        }
-        return n;
-    }
-    */
 </script>
 
 <!--
@@ -212,5 +148,6 @@
     </div>
 </div>
 -->
+
 </body>
 </html>

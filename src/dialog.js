@@ -1,4 +1,22 @@
+/**
+ * dialog模块
+ *
+ * @module dialog
+ *
+ */
+
+
+/** @namespace Dialog */
+
 define(function (require) {
+    /**
+     *
+     * @constructor
+     * @alias module:dialog
+     * @param {Object} config - 对象字面量
+     * @return {Function} Dialog - 返回函数
+     */
+
     // "use strict";
     //var type = require("type");
     //var jQuery = require("jquery");
@@ -38,16 +56,20 @@ define(function (require) {
             });
         }
 
+        // 每个dialog生成唯一ID
+        config.id = "dialog" + (+new Date());
+
         return new Dialog.prototype._create(config); // #001 new一个对象
     };
 
+
+
+    // 默认配置参数
     Dialog.defaults = {
-        // 取消
-        hi: null,
-        awa: null,
         // 确定
         ok: null,
         okValue: "确定",
+        // 取消
         cancel: null,
         cancelValue: "取消"
     }
@@ -57,6 +79,7 @@ define(function (require) {
 
         _create: function (config) {
             var dom;
+
             // 加载html结构
             this.dom = dom = this._innerHTML(config);
             // 确定 取消按钮添加
@@ -95,24 +118,25 @@ define(function (require) {
             var dom = this.dom,
                 $buttons = dom.buttons[0],
                 args = [].slice.call(arguments),    // 把类数组转换为数组
-                listener = this._listener = {}; // 事件回调组
+                listener = this._listener = {};  // 事件回调组
 
-            var val, i, value = "", id = "", button, txt;
+            var val, i, id = "", button;
 
             for (i = 0; i < args.length; i++) {
                 val = args[i];
-                value = val.value;
                 id = val.id;
-                button = document.createElement("button");
+                button = document.createElement("input");
                 button.type = "button";
-                button.id = id;
-                txt = document.createTextNode(value);
+                button.value = val.value;
+                // 标记id,鼠标点击确定、取消时用
+                button.setAttribute("data-id", id);
+                button.className = "d-button"
 
                 // 事件回调
                 listener[id] = {}
                 listener[id].callback = val.callback;
 
-                button.appendChild(txt);
+                // 按钮添加到dom里
                 $buttons.appendChild(button);
 
             }
@@ -125,6 +149,7 @@ define(function (require) {
         _addEvent: function () {
             var that = this,
                 dom = that.dom,
+                id, //目标元素的id
                 target; // 目标元素
 
             // 委托在最外层元素上
@@ -134,8 +159,9 @@ define(function (require) {
                 if (target == dom.close[0]) { // 关闭
                     that.close();
                 } else {
+                    id = target.getAttribute("data-id");
                     // 确定or取消
-                    target.id && that._click(target.id);
+                    id && that._click(id);
                 }
             });
 

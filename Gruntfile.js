@@ -141,17 +141,6 @@ module.exports = function(grunt){
 
         //压缩最终Build文件夹
         compress: {
-            //main: {
-            //    options: {
-            //       archive: '<%= archive_name %>_<%= grunt.template.today("yyyy年mm月dd日hh时MM分ss秒TT") %>.zip'
-            //       //archive: '<%= archive_name %>_<%= grunt.template.today("yyyy-mm-dd HH:MM:ss TT")%>.zip'
-            //    },
-            //    expand: true,
-            //    cwd: "build/",
-            //    src: ["**/*"],
-            //    dest: 'public/'
-            //}
-
             main: {
                 options: {
                     //mode: 'gzip',
@@ -165,36 +154,18 @@ module.exports = function(grunt){
                 //,dest: 'public/'
             }
 
-            //package:  {
-            //    options: {
-            //        mode: 'gzip'
-            //    },
-            //    expand: true,
-            //        cwd: 'build/',
-            //        src: ['**/*'],
-            //        dest: 'public/'
-            //},
-            //
-            //package2: {
-            //    options: {
-            //        mode: 'gzip',
-            //        archive: '<%= archive_name %>_<%= grunt.template.today("yyyy年mm月dd日hh时MM分ss秒TT") %>.zip'
-            //    },
-            //    expand: true,
-            //    cwd: 'build/',
-            //    src: ['**/*'],
-            //    dest: '' //public/
-            //}
         },
 
         // 文档生成工具
 
         jsdoc : {
             dist : {
-                src: ['src/**/*.js', 'README.md'],
+                //src: ['src/**/*.js', 'README.md'],
+                src: ["src/demo.js", "src/dialog.js"],
+                //src: ["src/demo.js", 'src/dialog.js', 'README.md'],
                 options: {
-                    destination: 'doc',
-                    template : "node_modules/grunt-jsdoc/node_modules/ink-docstrap/template",
+                    destination: 'doc'
+                    ,template : "node_modules/grunt-jsdoc/node_modules/ink-docstrap/template",
                     configure : "node_modules/grunt-jsdoc/node_modules/ink-docstrap/template/jsdoc.conf.json"
                 }
             }

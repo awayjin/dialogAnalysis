@@ -4,7 +4,6 @@
       * js基础库
       * @param {object} selector
       *
-      * @module  js基础库
       */
 
 	// jQuery选择器  
@@ -15,21 +14,65 @@
 		if (sizzle) {
 			// selector = sizzle(selector);
 		}
-		
+
+
         return new $.fn.constructor(selector);
     };
 
+
+    // 类名选择器
+    function getClass(className) {
+        if (document.getElementsByClassName) {
+            return document.getElementsByClassName(className);
+        } else {
+            var arr = [],
+                els = document.getElementsByTagName("*"),
+                sim, j, i;
+            for ( i=0; i<els.length; i++) {
+                sim = els[i].className.split(" ");
+                for( j=0; j< sim.length; j++) {
+                    if( sim[j] === className ) {
+                        arr.push(els[i]);
+                    }
+
+                }
+            }
+            return arr;
+        }
+    }
+
     $.fn = $.prototype = {
         constructor: function (selector) {
+
+
+            if (typeof selector === "string") {
+                if ( /([\.])/.test(selector) ) {
+                    var className = getClass(selector.slice(1));
+                    for (var i=0; i<className.length; i++) {
+                        this[i] = className[i];
+                    }
+                   alert("222:"+ this.bind);
+                    return this;
+                }
+            }
+
+            //selector = document.getElementsByClassName( selector.slice(1) );
+
+            if (typeof selector === "string2") {
+                var sel = selector.slice(1);
+                selector = document.getElementsByClassName(sel)[0];
+            }
 
             this[0] = selector;
             return this;
         },
 
+
         // 删除当前节点
         remove: function () {
             var ele = this[0];
             ele.parentNode.removeChild(ele);
+            alert(this)
             return this;
         },
 
@@ -84,6 +127,50 @@
     $.isArray = function (arr) {
         return $.type(arr)  === "array";
     }
+
+     // 检查页面是否有重复id
+     function isRepeatId(){
+         var eles = document.getElementsByTagName("*");
+         var arr = []; // 重复id数组
+         var obj = {};
+         var id = ''; // 重复id
+
+         for (var i=0; i<eles.length; i++) {
+             id = eles[i].id;
+             if (id) {
+                 // arr.push(id);
+                 if ( obj[id] ) {
+                     console.log("重复id:", id, ", 第一个元素位置:" + obj[id], ", 重复元素位置:" + i);
+                     arr.push(id);
+                 } else {
+                     obj[id] = i;
+                 }
+             }
+
+         }
+
+         console.log(arr);
+
+     }
+
+     // 数组去重
+     function isRepeatArray(){
+
+         var arr = [];
+         var obj2 = {};
+         var arr2 = ["a", 232, 22, "a", 11, 22, "a", "sdfsd", "d", 11, "d"];
+
+
+         for (var i=0; i<arr2.length; i++) {
+             if ( !obj2[arr2[i]] ) {
+                 arr.push(arr2[i]);
+                 obj2[arr2[i]] = true;
+             }
+         }
+         return arr;
+     }
+
+     // console.log(isRepeatArray());
 
     return $;
 });
