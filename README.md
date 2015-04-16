@@ -34,3 +34,4 @@ native dialog analysis
 	    [].slice.call(arguments)	// IE8 COM对象非DOM对象 
 
 
+

@@ -93,6 +93,8 @@
 
 <!--<script src="../lib/sizzle.js"></script>-->
 
+
+<h1 id="ie">ie txt attachEvent</h1>
 <script>
 
 
@@ -111,15 +113,29 @@
 
 	seajs.use(["core"], function ($) {
 
-        var panel = document.getElementById("panel");
-        $(panel).bind("click", function (e) {
-            //$(this).remove();
-            $(this).remove();
+
+        $(".panel").bind("click", function (e) {
+           $(this).remove();
+
         });
     })
 
 
 
+    function callback (e) {
+        alert("32:"+this.innerHTML)
+//        alert("1:"+this.innerHTML + ", 3:" + window.event.srcElement.innerHTML)
+    }
+
+    if (window.attachEvent) {
+        var panel = document.getElementById("ie");
+        panel.attachEvent("onclick", function () {
+            callback.call(panel)
+        });
+    }
+
+
+    //    callback.call(panel.attachEvent("onclick", callback), this);
 
 </script>
 
