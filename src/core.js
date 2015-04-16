@@ -51,7 +51,6 @@
                     for (var i=0; i<className.length; i++) {
                         this[i] = className[i];
                     }
-                   alert("222:"+ this.bind);
                     return this;
                 }
             }
@@ -63,6 +62,7 @@
                 selector = document.getElementsByClassName(sel)[0];
             }
 
+
             this[0] = selector;
             return this;
         },
@@ -72,22 +72,43 @@
         remove: function () {
             var ele = this[0];
             ele.parentNode.removeChild(ele);
-            alert(this)
             return this;
         },
 
         /**
          * 添加事件监听.
-         * @param   {string}    事件类型
-         * @param   {Function}  监听函数
-         * */
+         * @param {string} type 事件类型
+         * @param {Function} callback  监听函数
+         */
         bind: function (type, callback) {
-            var ele = this[0];
-            if (ele.addEventListener) {
-                ele.addEventListener(type, callback, false)
-            } else if (ele.attachEvent) {
-                ele.attachEvent("on" + type, callback)
+            var that = this[0];
+
+            for (var i in this) {
+                var num = parseInt(i);
+                if (!isNaN(num)) {
+                    // ele = this[i];
+                   // number.push(n)
+                    console.log(num, this)
+                   addEvent(this[i])
+                }
             }
+
+            // addEvent();
+
+            function addEvent (selecotr) {
+                var ele = selecotr || that;
+                if (ele.addEventListener) {
+                    ele.addEventListener(type, callback, false)
+                } else if (ele.attachEvent) {
+                    // ele.attachEvent("on" + type, callback);
+                    // 解决 IE8 以下this指向问题
+                    ele.attachEvent("on" + type, function () {
+                        callback.call(ele, arguments);
+                    });
+                }
+            }
+
+
             return this;
         }
     };
