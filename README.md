@@ -3,7 +3,7 @@ native dialog analysis
 
 # JavaScript知识结构
 
-#原始类型Primitive
+#A.原始类型Primitive
 ## 1.Boolean 
 
 ## 2.Number
@@ -16,7 +16,7 @@ native dialog analysis
 
 ## 6.Symbol
 
-#复杂数据类型
+#B.复杂数据类型
 ## 7.Object
     类型检测
     	typeof /s/  // chrome1-12 return function
@@ -36,7 +36,7 @@ native dialog analysis
 	    7.3.1 转换数组
 	    [].slice.call(arguments)	// IE8 COM对象非DOM对象 
 		
-#DOM与COM-标准与IE8-
+#C.文档对象类型 DOM与COM-标准与IE8-
 	#8.1 事件监听器 addEventListener和attachEvent
 		// 标准
 		ele.addEventLisnter(type, function(event){
