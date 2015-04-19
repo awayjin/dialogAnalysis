@@ -83,27 +83,37 @@
         bind: function (type, callback) {
             var that = this[0];
 
-            for (var i in this) {
-                var num = parseInt(i);
-                if (!isNaN(num)) {
-                    // ele = this[i];
-                   // number.push(n)
-                    console.log(num, this)
-                   addEvent(this[i])
-                }
-            }
+			// 两个对象以上遍历 
+			if (this[1]) {
+				for (var i in this) {
+					var num = parseInt(i);
+					if (!isNaN(num)) {
+						// ele = this[i];
+					   // number.push(n)						
+					   addEvent(this[i])
+					}
+				}
+			} else {
+				
+				addEvent();
+			}
 
-            // addEvent();
+            
 
             function addEvent (selecotr) {
                 var ele = selecotr || that;
                 if (ele.addEventListener) {
-                    ele.addEventListener(type, callback, false)
+                    //ele.addEventListener(type, callback, false);
+                    ele.addEventListener(type, function (e) {
+						callback.call(ele, e)
+					}, false);
+					
                 } else if (ele.attachEvent) {
                     // ele.attachEvent("on" + type, callback);
                     // 解决 IE8 以下this指向问题
-                    ele.attachEvent("on" + type, function () {
-                        callback.call(ele, arguments);
+                    ele.attachEvent("on" + type, function (e) {	
+						// IE8传入window.event参数没用
+                        callback.call(ele, window.event);
                     });
                 }
             }

@@ -88,7 +88,7 @@
 </div>
 
 <div class="panel" id="panel">
-    hi panel
+    <h3 class="panel2"> hi panel </h3>
 </div>
 
 <!--<script src="../lib/sizzle.js"></script>-->
@@ -114,10 +114,20 @@
 	seajs.use(["core"], function ($) {
 
 
-        $(".panel").bind("click", function (e) {
-           $(this).remove();
+        $(".panel").bind("click", function (e) {			
+			
+          $(this).remove();
 
         });
+		 $(".panel2").bind("click", function (e) {
+			
+			if (e.stopPropagation) {
+				e.stopPropagation()
+			} else {
+				window.event.cancelBubble = true
+			}
+		    
+		 });
     })
 
 

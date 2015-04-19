@@ -153,9 +153,10 @@ define(function (require) {
                 target; // 目标元素
 
             // 委托在最外层元素上
-            dom.wrap.bind("click", function (e) {
-                e = e || event;
-                target = e.target || e.srcElement;
+            dom.wrap.bind("click", function (e) { 
+			
+				var target = e.target || window.event.srcElement
+				
                 if (target == dom.close[0]) { // 关闭
                     that.close();
                 } else {
