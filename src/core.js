@@ -88,7 +88,7 @@
                 if (!isNaN(num)) {
                     // ele = this[i];
                    // number.push(n)
-                    console.log(num, this)
+                   // console.log(num, this)
                    addEvent(this[i])
                 }
             }
@@ -100,11 +100,18 @@
                 if (ele.addEventListener) {
                     ele.addEventListener(type, callback, false)
                 } else if (ele.attachEvent) {
-                    // ele.attachEvent("on" + type, callback);
+
                     // 解决 IE8 以下this指向问题
-                    ele.attachEvent("on" + type, function () {
+                    ele.attachEvent("on" + type, function (e) {
                         callback.call(ele, arguments);
                     });
+
+                    if (false) {
+                        ele.attachEvent("on" + type, callback);
+                    } else {
+
+                    }
+
                 }
             }
 
