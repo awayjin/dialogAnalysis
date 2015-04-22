@@ -71,7 +71,8 @@ define(function (require) {
         okValue: "确定",
         // 取消
         cancel: null,
-        cancelValue: "取消"
+        cancelValue: "取消",
+        fixed: false
     }
 
     Dialog.prototype = {
@@ -80,12 +81,20 @@ define(function (require) {
         _create: function (config) {
             var dom;
 
-            // 加载html结构
-            this.dom = dom = this._innerHTML(config);
-            // 确定 取消按钮添加
-            this.button.apply(this, config.button);
-            // 绑定事件
-            this._addEvent();
+
+            this.dom = dom = this._innerHTML(config); // 加载html结构
+            this.css("position", config.fixed ? "fixed" : "relative");
+
+            this.button.apply(this, config.button); // 确定、取消按钮
+
+            this._addEvent(); // 绑定事件
+        },
+
+        /**/
+        css: function (name, value) {
+
+            this.wrap.style.cssText = "position:absolute; top:20px; left:30px; z-index:50";
+            return this;
         },
 
         _innerHTML: function (data) {
@@ -153,9 +162,10 @@ define(function (require) {
                 target; // 目标元素
 
             // 委托在最外层元素上
-            dom.wrap.bind("click", function (e) {
-                e = e || event;
-                target = e.target || e.srcElement;
+            dom.wrap.bind("click", function (e) { 
+			
+				var target = e.target || window.event.srcElement
+				
                 if (target == dom.close[0]) { // 关闭
                     that.close();
                 } else {

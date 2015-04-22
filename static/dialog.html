@@ -61,6 +61,22 @@
 		
 	});
 
+    // 基础库
+    seajs.use(["core"], function ($) {
+
+        $(".panel").bind("click", function (e) {
+            $(this).remove();
+        });
+        $(".panel2").bind("click", function (e) {
+            e.stopPropagation();
+        });
+
+        $(".ie").bind("click", function (e) {
+            e.preventDefault()
+            alert($(this)[0].innerHTML);
+        })
+    })
+
     //seajs.use("dialog");
 
 </script>
@@ -88,56 +104,16 @@
 </div>
 
 <div class="panel" id="panel">
-    hi panel
+    <h3 class="panel2"> hi panel </h3>
 </div>
 
 <!--<script src="../lib/sizzle.js"></script>-->
 
 
-<h1 id="ie">ie txt attachEvent</h1>
-<script>
+<h1 id="ie" class="ie">
+    <a href="http://codegoing.com" target="_blank" title="Go 百度">ie txt attachEvent</a>
+</h1>
 
-
-    //alert(getClass("panel"));
-
-    /*
-	seajs.use(["core", "sizzle"], function (core, $) {
-        // var panel = document.getElementsByClassName("panel")[0];
-        core($(".panel")[0]).bind("click", function (e) {
-            this.remove();
-        });
-    })
-
-	
-	*/
-
-	seajs.use(["core"], function ($) {
-
-
-        $(".panel").bind("click", function (e) {
-           $(this).remove();
-
-        });
-    })
-
-
-
-    function callback (e) {
-        alert("32:"+this.innerHTML)
-//        alert("1:"+this.innerHTML + ", 3:" + window.event.srcElement.innerHTML)
-    }
-
-    if (window.attachEvent) {
-        var panel = document.getElementById("ie");
-        panel.attachEvent("onclick", function () {
-            callback.call(panel)
-        });
-    }
-
-
-    //    callback.call(panel.attachEvent("onclick", callback), this);
-
-</script>
 
 <!--
 <div class="modal-dialog">
