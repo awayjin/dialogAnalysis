@@ -81,19 +81,40 @@ define(function (require) {
         _create: function (config) {
             var dom;
 
-
             this.dom = dom = this._innerHTML(config); // 加载html结构
-            this.css("position", config.fixed ? "fixed" : "relative");
+            this.button.apply(this, config.button); // 自定义按钮
 
-            this.button.apply(this, config.button); // 确定、取消按钮
+            dom.wrap.css("position", config.fixed ? "fixed" : "absolute");
+            dom.wrap.css({
+                "z-index": 22,
+                "width": 'auto'
+            });
+            this.position(); // 位置
 
             this._addEvent(); // 绑定事件
         },
 
-        /**/
-        css: function (name, value) {
+        /*
+        * 疑问:
+        * 1.每个对象的位置一样? A: button和css 位置
+        * 2.兼容scrollTop ?  A: win.pageYOffset || doc.docElement.scrollTop
+        *
+        * */
+        position: function (name, value) {
 
-            this.wrap.style.cssText = "position:absolute; top:20px; left:30px; z-index:50";
+            var doc = document;
+            var width = doc.body.clientWidth;
+
+            // this.wrap.style.cssText = "position:absolute; top:0px; left:0px; z-index:50";
+            var left = (width - this.wrap.clientWidth) / 2;
+
+            this.wrap.style.left =  left + "px";
+
+            var win = doc.defaultView || doc.parentWindow;
+            // scrollTop兼容处理
+            var top = win.pageYOffset || doc.documentElement.scrollTop;
+            this.wrap.style.top =  (top + 50) + "px";
+
             return this;
         },
 

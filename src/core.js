@@ -67,6 +67,34 @@ define(function (require) {
             return this;
         },
 
+        css: function (name, value) {
+            var ele = this[0];
+            if (typeof name === "string") {
+                //ele.style.cssText = ""+name+":"+value+"";
+                ele.style[name] = value;
+            } else if (name instanceof Object) {
+
+                function camelCase (cname) {
+                    var sna = cname.split("-");
+                    var camel = sna[1]
+
+                    if (camel) {
+                        var camelFirst = camel.slice(0, 1).toUpperCase()
+                        return sna[0] + camelFirst + camel.slice(1);
+                    } else {
+                        return cname;
+                    }
+
+
+                }
+                for (var i in name) {
+                    var camel = camelCase(i)
+                    ele.style[camel] = name[i];
+                }
+            }
+
+            return this;
+        },
 
         // 删除当前节点
         remove: function () {
@@ -147,6 +175,11 @@ define(function (require) {
 
     $.fn.constructor.prototype = $.fn;
 
+
+    //
+    $.camelCase = function () {
+
+    }
 
     // 基本类型检测
     $.type = function (obj) {

@@ -34,6 +34,8 @@
     });
 
     seajs.use("../src/dialog", function(dialog){
+        dialog();
+
         dialog({
             test: "a-test",
             ok: function (){
@@ -41,9 +43,9 @@
                 return false;
             },
             okValue: "确定vb",
-            cancel: true
+            cancel: true,
+            fixed: true
         });
-        dialog();
     });
 
 
@@ -58,13 +60,14 @@
 			cancel: 11
 		
 		})
-		
-	});
+
+
+    });
 
     // 基础库
     seajs.use(["core"], function ($) {
 
-        $(".panel").bind("click", function (e) {
+        $(".btn-primary").bind("click", function (e) {
             $(this).remove();
         });
         $(".panel2").bind("click", function (e) {
@@ -74,7 +77,7 @@
         $(".ie").bind("click", function (e) {
             e.preventDefault()
             alert($(this)[0].innerHTML);
-        })
+        });
     })
 
     //seajs.use("dialog");
@@ -141,6 +144,9 @@
     </div>
 </div>
 -->
+
+<!--<script src="../lib/jquery"></script>-->
+<p style="margin-top:1300px">22</p>
 
 </body>
 </html>
