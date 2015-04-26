@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>dialog</title>
+    
+    <link rel="stylesheet" href="css/bootstrap-3.3.0.css"/>
+    <script src="../lib/jquery.js"></script>
+
+	<style type="text/css">
+	  .transform { -moz-transform: rotate(37deg); }
+	</style>
+
+</head>
+<body>
+
+<div class="transform" style="border: 1px solid red; margin-top:50px; width:100px;">
+	transform
+</div>
+
+<script>
+$(".transform").css({
+	// "transform": "rotate(17deg)"
+});
+
+var msPrefix = /-ms-/ig;
+var dashAlpha = /-([a-z]|[0-9])/ig;
+var fcamelCase = function (all, letter) {
+	return letter.toUpperCase();
+}
+
+var camelCase = function (string) {
+	return string.replace(msPrefix, "ms-").replace(dashAlpha, fcamelCase);
+};
+
+console.log(camelCase('-ms-ji'));
+
+console.log(camelCase('-webkit-ji'));
+
+$(".transform").css({"-moz-transform": "rotate(20deg)"})
+</script>
+
+<p style="margin-top:1300px">22</p>
+
+</body>
+</html>

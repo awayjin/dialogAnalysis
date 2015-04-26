@@ -68,7 +68,7 @@ define(function (require) {
         },
 
         css: function (name, value) {
-            var ele = this[0];
+            var ele = this[0], camel;
             if (typeof name === "string") {
                 //ele.style.cssText = ""+name+":"+value+"";
                 ele.style[name] = value;
@@ -88,7 +88,7 @@ define(function (require) {
 
                 }
                 for (var i in name) {
-                    var camel = camelCase(i)
+                    camel = $.camelCase(i);					
                     ele.style[camel] = name[i];
                 }
             }
@@ -212,7 +212,21 @@ define(function (require) {
     // 数组检测
     $.isArray = function (arr) {
         return $.type(arr)  === "array";
-    }
+    };
+	
+	// 转换为驼峰形式
+	$.camelCase = function (string) {
+		var 
+			msPrefix = /-ms-/ig,
+			dashAlpha = /-(\d[a-z])/ig, 
+			fcamelCase = function (match, letter) {
+				// 返回dashAlpha ()里的内容
+				return letter.toUpperCase();
+			}
+		// IE是msTransform 标准是WebkitTransform
+		return string.replace(msPrefix, "ms-").replace(dashAlpha, fcamelCase);
+			
+	};
 
      // 检查页面是否有重复id
      function isRepeatId(){
