@@ -22,78 +22,80 @@ define(function (require) {
     };
 
 
-    // 类名选择器
-    function getClass(className) {
-        if (document.getElementsByClassName) {
-            return document.getElementsByClassName(className);
-        } else {
-            var arr = [],
-                els = document.getElementsByTagName("*"),
-                sim, j, i;
-            for ( i=0; i<els.length; i++) {
-                sim = els[i].className.split(" ");
-                for( j=0; j< sim.length; j++) {
-                    if( sim[j] === className ) {
-                        arr.push(els[i]);
-                    }
-
-                }
-            }
-            return arr;
-        }
-    }
-
     $.fn = $.prototype = {
         constructor: function (selector) {
 
-
             if (typeof selector === "string") {
-                // 匹配.cls
-                if ( /([\.])/.test(selector) ) {
-                    var className = getClass(selector.slice(1));
-                    for (var i=0; i<className.length; i++) {
-                        this[i] = className[i];
+                var
+                     // ?:非获取匹配 匹配Class
+                    pattern = /(?:\.([\w-]+))/,
+                    classEle = "",
+                    matches,
+                    i;
+
+                matches = pattern.exec(selector);
+                // Class
+                if (matches[1]) {
+                    classEle = this.getClass(matches[1]);
+                    for (i=0; i<classEle.length; i++) {
+                        this[i] = classEle[i];
                     }
                     return this;
                 }
-            }
-
-            if (typeof selector === "string2") {
-                var sel = selector.slice(1);
-                selector = document.getElementsByClassName(sel)[0];
             }
 
             this[0] = selector;
             return this;
         },
 
+        show: function () {
+            this.css("display", "block");
+            return this;
+        },
+
+        hide: function () {
+            this.css("display", "none")
+        },
+
+        /*
+        * css方法
+        * @param {string} name - css样式属性名
+        * @param {string | number} value - css样式属性值
+        *
+        * */
         css: function (name, value) {
-            var ele = this[0], camel;
+            var ele = this[0], camel, i;
             if (typeof name === "string") {
-                //ele.style.cssText = ""+name+":"+value+"";
                 ele.style[name] = value;
             } else if (name instanceof Object) {
-
-                function camelCase (cname) {
-                    var sna = cname.split("-");
-                    var camel = sna[1]
-
-                    if (camel) {
-                        var camelFirst = camel.slice(0, 1).toUpperCase()
-                        return sna[0] + camelFirst + camel.slice(1);
-                    } else {
-                        return cname;
-                    }
-
-
-                }
-                for (var i in name) {
+                for (i in name) {
                     camel = $.camelCase(i);					
                     ele.style[camel] = name[i];
                 }
             }
 
             return this;
+        },
+
+        // Class选择器
+        getClass: function (className) {
+            if (document.getElementsByClassName) {
+                return document.getElementsByClassName(className);
+            } else {
+                var arr = [],
+                    els = document.getElementsByTagName("*"),
+                    sim, j, i;
+                for ( i=0; i<els.length; i++) {
+                    sim = els[i].className.split(" ");
+                    for( j=0; j< sim.length; j++) {
+                        if( sim[j] === className ) {
+                            arr.push(els[i]);
+                        }
+
+                    }
+                }
+                return arr;
+            }
         },
 
         // 删除当前节点
@@ -129,9 +131,14 @@ define(function (require) {
                 var ele = selecotr || that;
                 if (ele.addEventListener) {
                     //ele.addEventListener(type, callback, false);
+                    //ele.addEventListener(type, function (e) {
+                    //    alert(111111)
+						//callback.call(ele, $(e));
+                    //}, false);
+
                     ele.addEventListener(type, function (e) {
-						callback.call(ele, $(e))
-					}, false);
+                        callback.call(ele, e);
+                    }, false);
 					
                 } else if (ele.attachEvent) {
                     // 解决 IE8 以下this指向问题
@@ -153,8 +160,8 @@ define(function (require) {
         // 阻止事件冒泡
         stopPropagation: function () {
             var e = this.event();
-            if (e.stopPropagation) {
-                e.stopPropagation()
+            if (event.stopPropagation) {
+                event.stopPropagation()
             } else {
                 window.event.cancelBubble = true
             }
@@ -218,7 +225,7 @@ define(function (require) {
 	$.camelCase = function (string) {
 		var 
 			msPrefix = /-ms-/ig,
-			dashAlpha = /-(\d[a-z])/ig, 
+			dashAlpha = /-([\da-z])/ig,
 			fcamelCase = function (match, letter) {
 				// 返回dashAlpha ()里的内容
 				return letter.toUpperCase();

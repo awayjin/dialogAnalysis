@@ -12,6 +12,14 @@
 </head>
 <body>
 
+<div class="demo">
+    demo
+    <h1>Hi</h1>
+</div>
+
+<!--<div class="d-mask"></div>-->
+
+
 <script>
 
     seajs.config({
@@ -33,10 +41,14 @@
 
     });
 
-    seajs.use("../src/dialog", function(dialog){
+
+
+
+    // seajs.use("demo");
+    seajs.use("dialog", function(dialog){
         dialog();
 
-        dialog({
+        var d3 = dialog({
             test: "a-test",
             ok: function (){
                 alert("不能关闭,因为返回了 false");
@@ -44,21 +56,24 @@
             },
             okValue: "确定vb",
             cancel: true,
-            fixed: true
-        });
-    });
+            fixed: false,
+            lock: true
+        })
 
+//        d3.css({
+//            "z-index": 22,
+//            width: 'auto',
+//            "-webkit-transform": "rotate(2deg)"
+//        });
+//        console.log(d3)
 
-    // seajs.use("demo");
-    seajs.use("dialog", function(dialog){
-	   
-		
-		dialog({ 
+		dialog({
 			ok: function (){
 				alert(22);
 			},
-			cancel: 11
-		
+			cancel: 11,
+            lock: true
+
 		})
 
 
@@ -67,16 +82,22 @@
     // 基础库
     seajs.use(["core"], function ($) {
 
-        $(".btn-primary").bind("click", function (e) {
+        $(".btn-primary")
+                .bind("click", function (e) {
+            alert(1)
             $(this).remove();
         });
         $(".panel2").bind("click", function (e) {
             e.stopPropagation();
+          //  alert(2)
         });
 
         $(".ie").bind("click", function (e) {
             e.preventDefault()
             alert($(this)[0].innerHTML);
+        }).css({
+            position: "fixed",
+            transform: "rotate(-30deg)"
         });
     })
 
@@ -114,7 +135,7 @@
 
 
 <h1 id="ie" class="ie">
-    <a href="http://codegoing.com" target="_blank" title="Go 百度">ie txt attachEvent</a>
+    <a href="http://localhost:81/dialogAnalysis/static/dialog.html" target="_blank" title="Go 百度">ie txt attachEvent</a>
 </h1>
 
 

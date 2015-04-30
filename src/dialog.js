@@ -59,10 +59,9 @@ define(function (require) {
         // 每个dialog生成唯一ID
         config.id = "dialog" + (+new Date());
 
+
         return new Dialog.prototype._create(config); // #001 new一个对象
     };
-
-
 
     // 默认配置参数
     Dialog.defaults = {
@@ -72,7 +71,10 @@ define(function (require) {
         // 取消
         cancel: null,
         cancelValue: "取消",
-        fixed: false
+        fixed: false,
+        // 锁屏
+        lock: false,
+        zIndex: 1987
     }
 
     Dialog.prototype = {
@@ -86,12 +88,52 @@ define(function (require) {
 
             dom.wrap.css("position", config.fixed ? "fixed" : "absolute");
             dom.wrap.css({
-                "z-index": 22,
-                "width": 'auto'
+               // "z-index": config.zIndex,
+                width: 'auto',
+                "-webkit-transform": "rotate(2deg)"
             });
+
             this.position(); // 位置
 
+            this.zIndex();
+            config.lock && this.lock();
+
             this._addEvent(); // 绑定事件
+        },
+
+        /** 图层顺序 */
+        zIndex: function () {
+            var
+                dom = this.dom,
+                mask = this.mask,
+                index = Dialog.defaults.zIndex++;
+
+            dom.wrap.css({"z-index": index});
+
+            return this;
+        },
+
+
+        /** 设置锁屏 */
+        lock: function (index) {
+            var
+                doc = document,
+                body = doc.body,
+                mask,
+                index = Dialog.defaults.zIndex - 1;
+
+            this.zIndex();
+
+            mask = doc.createElement("div");
+            mask.className = "d-mask";
+
+            // 锁屏
+            this.mask = $(mask);
+            this.mask.css({"z-index": index})
+
+            body.appendChild(mask);
+
+            return this;
         },
 
         /*
@@ -100,19 +142,16 @@ define(function (require) {
         * 2.兼容scrollTop ?  A: win.pageYOffset || doc.docElement.scrollTop
         *
         * */
-        position: function (name, value) {
+        position: function () {
 
-            var doc = document;
-            var width = doc.body.clientWidth;
-
-            // this.wrap.style.cssText = "position:absolute; top:0px; left:0px; z-index:50";
-            var left = (width - this.wrap.clientWidth) / 2;
+            var doc = document,
+                width = doc.body.clientWidth,
+                left = (width - this.wrap.clientWidth) / 2,
+                win = doc.defaultView || doc.parentWindow,
+               // scrollTop兼容处理
+               top = win.pageYOffset || doc.documentElement.scrollTop;
 
             this.wrap.style.left =  left + "px";
-
-            var win = doc.defaultView || doc.parentWindow;
-            // scrollTop兼容处理
-            var top = win.pageYOffset || doc.documentElement.scrollTop;
             this.wrap.style.top =  (top + 50) + "px";
 
             return this;
@@ -212,6 +251,8 @@ define(function (require) {
         close: function () {
             var dom = this.dom;
             dom.wrap.remove();
+            this.mask && this.mask.remove();
+            return this;
         },
 
         _html: function (config) {
@@ -247,6 +288,10 @@ define(function (require) {
  思想:
  1.不依赖任何库,调用简单
  2.适应当前，面向未来
+
+ 具体问题:
+ 1.z-index怎么关联到dialog, lock锁屏层
+ 2.关闭时怎样关闭对应的lock锁屏层
 
 
  得到:

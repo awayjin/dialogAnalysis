@@ -15,11 +15,29 @@
 </head>
 <body>
 
+<table>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+
 <div class="transform" style="border: 1px solid red; margin-top:50px; width:100px;">
 	transform
 </div>
 
+<p class="25">How time flies.I have to be going now.</p>
+
 <script>
+
+/*
+* (?=):正向断言  （?!）负向断言 (?:)非获取匹配
+*
+* \w: 匹配包括下划线的任何单词字符。等价于“[A-Za-z0-9_]”。
+*
+*/
+
 $(".transform").css({
 	// "transform": "rotate(17deg)"
 });
@@ -38,7 +56,7 @@ console.log(camelCase('-ms-ji'));
 
 console.log(camelCase('-webkit-ji'));
 
-$(".transform").css({"-moz-transform": "rotate(20deg)"})
+$(".transform").css({"-webkit-transform": "rotate(20deg)"})
 </script>
 
 <p style="margin-top:1300px">22</p>
