@@ -226,7 +226,25 @@ module.exports = function(grunt){
                 concurrency: 14,//并发数，稍微大点,才能连成功
             progress: true
             }
+        },
+
+        combo: {
+            options: {
+                sourceMap: {
+                    sourceRoot: './'
+                }
+            },
+            build: {
+                files: [{
+                    expand: true,
+                    cwd: './',
+                    src: './src/**/*.js',
+                    dest: './dist',
+                    ext: '.combo.js'
+                }]
+            }
         }
+
     });
 
 

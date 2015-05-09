@@ -10,7 +10,7 @@
 
 
 </head>
-<body>
+<body class="body">
 
 <div class="demo">
     demo
@@ -46,7 +46,6 @@
 
     // seajs.use("demo");
     seajs.use("dialog", function(dialog){
-        dialog();
 
         var d3 = dialog({
             test: "a-test",
@@ -57,8 +56,11 @@
             okValue: "确定vb",
             cancel: true,
             fixed: false,
-            lock: true
-        })
+            lock: true,
+            title: "away title",
+            content: "<h2>jin <input type='text'/></h2>"
+        });
+        // d3.hide();
 
 //        d3.css({
 //            "z-index": 22,
@@ -71,16 +73,29 @@
 			ok: function (){
 				alert(22);
 			},
-			cancel: 11,
-            lock: true
+            lock: true,
+            cancel: 11
 
-		})
+		});
+
+        dialog();
+
 
 
     });
 
+    function dd () {
+        seajs.use("dialog", function (d) {
+            d({"lock": true});
+        });
+    }
+
     // 基础库
     seajs.use(["core"], function ($) {
+
+        $(".btn-default").bind("click", function ()  {
+            dd();
+        })
 
         $(".btn-primary")
                 .bind("click", function (e) {
@@ -106,7 +121,9 @@
 </script>
 
 
-<div class="panel panel-primary">
+<div class="btn btn-default">确定 显示dialog</div>
+
+<div class="panel panel-primary well">
     <div class="panel-heading">
         <div class="panel-title">测试</div>
     </div>
@@ -117,8 +134,7 @@
                   <label class="col-md-2 control-label">按钮组</label>
                   <div class="col-md-10">
                       <button class="btn btn-primary">取消</button>
-                      <div class="btn btn-success">确定</div>
-                      <div class="btn btn-default">确定</div>
+                      <div class="btn btn-success">确定 </div>
                       <div class="btn btn-warning">警告</div>
                   </div>
               </div>
@@ -137,6 +153,11 @@
 <h1 id="ie" class="ie">
     <a href="http://localhost:81/dialogAnalysis/static/dialog.html" target="_blank" title="Go 百度">ie txt attachEvent</a>
 </h1>
+
+
+<!--<script src="../lib/jquery"></script>-->
+<p style="margin-top:1300px">22</p>
+
 
 
 <!--
@@ -165,9 +186,5 @@
     </div>
 </div>
 -->
-
-<!--<script src="../lib/jquery"></script>-->
-<p style="margin-top:1300px">22</p>
-
 </body>
 </html>

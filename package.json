@@ -21,6 +21,7 @@
     "time-grunt": "^1.0.0"
   },
   "devDependencies": {
+    "grunt-cmd-combo": "^1.0.0",
     "grunt-contrib-copy": "^0.6.0",
     "grunt-contrib-cssmin": "^0.10.0",
     "grunt-jsdoc": "^0.5.8"

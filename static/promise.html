@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/bootstrap-3.3.0.css"/>
+    <script src="../lib/jquery.js"></script>
+    <script src="../lib/jquery.tmpl.js"></script>
+
+</head>
+<body>
+
+
+<pre>
+
+1.为什么要用 Promise？
+    场景： 为了减少首屏数据的加载
+    // DOM ready
+    $(document).ready( function () {
+        // 获取模版
+        $.get("./jq-template.tpl", function (tpl) {
+            // 获取数据
+            $.get("tpl.json", function (data) {
+                // 插入到DOM中
+                $("body").append(tpl);
+                $("#template1").tmpl(data.products).appendTo("#table1");
+            });
+        });
+    });
+
+2.模型
+    将事务按照顺序依次push到事务对列中
+    new Promise(ready).then(getTpl).then(getData).then(makeHtml).resolve();
+
+3.什么是Promise?
+    Promise 就是一个事务的管理器。
+    他的作用就是将各种内嵌回调的事务用流水形式表达，其目的是为了简化编程，让代码逻辑更加清晰
+
+    3.1简单理解为一个事务，存在三种状态
+    (1) 完成了 resolved
+    (2) 中断了 rejected
+    (3) 等待中 pending
+
+    3.2状态
+    无错误传递的 Promise 。
+    var Promise = function (affair) {
+        this.state = "pending";
+        this.affair = affair || function (o) { return o; };
+        this.allAffairs = []; // 事务管理器
+    };
+
+    then，将事务添加到事务队列（allAffairs）中
+    resolve，开启流程，让整个操作从第一个事务开始执行
+
+    // 操作事务之前，把事务依次放入事务对例中
+    Promise.prototype.then = function (nextAffair) {
+        var promise = new Promise();
+        if (this.state == 'resolved') {
+            // 如果当前状态是已完成,则这个事务会立即
+            return this._fire(promise, nextAffair);
+        } else {
+            // 否则加入队列
+            return this._push(promise, nextAffair);
+        }
+
+    };
+
+    // 把事务推入到事务管理器
+    Promise.prototype._push = function (nextPromise, nextAffair) {
+        this.allAffairs.push({
+            promise: nextPromise,
+            affair: nextAffair
+        });
+        return nextPromise;
+    };
+
+
+
+
+</pre>
+
+
+
+<script>
+    // Dom ready
+    $(document).ready( function () {
+        // 获取模版
+        $.get("./jq-template.tpl", function (tpl) {
+            // 获取数据
+            $.get("tpl.json", function (data) {
+                // 插入到DOM中
+                $("body").append(tpl);
+                $("#template1").tmpl(data.products).appendTo("#table1");
+            });
+        });
+    });
+
+</script>
+
+<hr/>
+
+华为的分割线
+jQuery.each({..},function(){})
+jQuery.fn.extend({..})
+jQuery.extend({...})
+jQuery.extend(jQuery.tmpl,{..})
+function xx(){}//自定义方法
+
+
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/bootstrap-3.3.0.css"/>
+    <script src="../lib/jquery.js"></script>
+    <script src="../lib/jquery.tmpl.js"></script>
+</head>
+<body>
+
+
+
+
+<script type="text/javascript">
+    var users = [
+            {
+                ID: 'think8848',
+                Name: 'Joseph Chan',
+                Langs: [
+                    'Chinese',
+                    'English'
+                ]
+          },
+
+        {
+            ID: 'think8848',
+            Name: 'Joseph Chan',
+            Langs: [
+                'Chinese',
+                'English'
+            ]
+        }
+    ];
+
+//    $('#template1').tmpl(users).appendTo('#table1');
+
+    // Dom ready
+    $(document).ready( function () {
+        // 获取模版
+        $.get("./jq-template.tpl", function (tpl) {
+            // 获取数据
+            $.get("tpl.json", function (data) {
+                // 插入到DOM中
+                $("body").append(tpl);
+                $("#template1").tmpl(data.products).appendTo("#table1");
+            });
+        });
+    });
+</script>
+
+
+
+
+
+
+<div aria-hidden="false" aria-labelledby="exampleModalLabel" role="dialog" tabindex="-1" id="exampleModal" class="modal fade in" style="top: 70px; display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span></button>
+                <h4 id="exampleModalLabel" class="modal-title">New message to @mdo</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label class="control-label" for="recipient-name">Recipient:</label>
+                        <input type="text" id="recipient-name" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="message-text">Message:</label>
+                        <textarea id="message-text" class="form-control"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
+                <button class="btn btn-primary" type="button">Send message</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--
+
+<link rel="shortcut icon" href="${MallRes}/base/images/purcotton.ico">
+	<script src="${MallRes}/base/js/jquery-1.8.3.js"></script>
+	<link href="${MallRes}/base/css/comm.css" rel="stylesheet" />
+	<script type="text/javascript">MallRes="${MallRes!}";kfguin="4006081000";eid="218808P8z8p8Q8P8P8y8z";ws="www.purcotton.com"; type="0";wpadomain="b";</script>
+	<script type="text/javascript" src="${MallRes}/base/js/kf.js?t=110922"></script>
+	<script src="${MallRes}/base/js/comm.js?version=${StaticVersion?default('2013')}"></script>
+	<script src="${MallRes}/mall/js/main/all_top_ready.js?version=${StaticVersion?default('2013')}"></script>
+	<script src="${MallRes}/mall/js/common/common-featrue.js?version=${StaticVersion?default('2013')}"></script>
+	<link rel="stylesheet" href="${MallRes}/base/plugin/jquery-ui.css">
+	<script src="${MallRes}/base/plugin/jquery-ui.js"></script>
+	<script src="${MallRes}/base/js/mber.js?version=${StaticVersion?default('2013')}"></script>
+	<link href="${MallRes}/base/css/goods.css" rel="stylesheet" type="text/css"/>
+	<script language="javascript" src="${MallRes}/mall/js/commodity/goods.js?version=${StaticVersion?default('2013')}"></script >
+	<script src="${MallRes?default("")}/mall/js/main/otherData.js?version=${StaticVersion?default('2013')}"></script>
+	<script src="${MallRes?default("")}/mall/js/commodity/commodity_detail.js?version=201312261151"></script >
+
+
+-->
+
+
+</body>
+</html>

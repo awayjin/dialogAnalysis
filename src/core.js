@@ -14,8 +14,7 @@ define(function (require) {
       */
 
 	// jQuery选择器  
-	var sizzle = require("sizzle");  	
-		  
+
     var $ = function (selector) {
 		
         return new $.fn.constructor(selector);
@@ -37,9 +36,13 @@ define(function (require) {
                 // Class
                 if (matches[1]) {
                     classEle = this.getClass(matches[1]);
-                    for (i=0; i<classEle.length; i++) {
-                        this[i] = classEle[i];
+
+                    if (classEle) {
+                        for (i=0; i<classEle.length; i++) {
+                            this[i] = classEle[i];
+                        }
                     }
+
                     return this;
                 }
             }
@@ -74,6 +77,15 @@ define(function (require) {
                 }
             }
 
+            return this;
+        },
+
+        html: function (content) {
+            if (content !== "") {
+                this[0].innerHTML = content;
+            } else {
+                this[0].innerHTML = content;
+            }
             return this;
         },
 
@@ -183,10 +195,6 @@ define(function (require) {
     $.fn.constructor.prototype = $.fn;
 
 
-    //
-    $.camelCase = function () {
-
-    }
 
     // 基本类型检测
     $.type = function (obj) {

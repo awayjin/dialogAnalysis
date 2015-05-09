@@ -68,10 +68,20 @@ define(function (require) {
         // 确定
         ok: null,
         okValue: "确定",
+
         // 取消
         cancel: null,
         cancelValue: "取消",
+
+        // 默认不开启固定
         fixed: false,
+
+        // 标题
+        title: "对话框",
+
+        // 对话框内容
+        content: "<div class='d-loading'></div>",
+
         // 锁屏
         lock: false,
         zIndex: 1987
@@ -87,32 +97,63 @@ define(function (require) {
             this.button.apply(this, config.button); // 自定义按钮
 
             dom.wrap.css("position", config.fixed ? "fixed" : "absolute");
-            dom.wrap.css({
-               // "z-index": config.zIndex,
-                width: 'auto',
-                "-webkit-transform": "rotate(2deg)"
-            });
+            //dom.wrap.css({
+            //   // "z-index": config.zIndex,
+            //    width: 'auto',
+            //    "-webkit-transform": "rotate(2deg)"
+            //});
 
-            this.position(); // 位置
+
+
 
             this.zIndex();
             config.lock && this.lock();
 
+            this
+                .title(config.title)
+                .content(config.content)
+                .position();  // 位置
+
             this._addEvent(); // 绑定事件
+        },
+
+        title: function (content) {
+            var dom = this.dom;
+
+            dom.title.html(content)
+            return this;
+        },
+
+        content: function (message) {
+            var dom = this.dom;
+
+            dom.content[0].innerHTML = message  ;
+            return this;
         },
 
         /** 图层顺序 */
         zIndex: function () {
             var
                 dom = this.dom,
-                mask = this.mask,
                 index = Dialog.defaults.zIndex++;
 
             dom.wrap.css({"z-index": index});
 
+            //  mousedown发生时切换多个dialog、lock的顺序
+            this.mask && this.mask.css("zIndex", index - 1);
+
             return this;
         },
 
+        show: function () {
+            this.wrap.style.display = "block";
+            return this;
+        },
+
+        hide: function () {
+            this.wrap.style.display = "none";
+            return this;
+        },
 
         /** 设置锁屏 */
         lock: function (index) {
@@ -131,7 +172,7 @@ define(function (require) {
             this.mask = $(mask);
             this.mask.css({"z-index": index})
 
-            body.appendChild(mask);
+            body.insertBefore(mask, body.firstChild);
 
             return this;
         },
@@ -233,6 +274,19 @@ define(function (require) {
                     // 确定or取消
                     id && that._click(id);
                 }
+            })
+
+            // 鼠标抬起改变相关图层顺序 Mouse Up是鼠标抬起触发的动作
+            .bind("mouseup", function () {
+               that.zIndex();
+            });
+            // 点遮罩层关闭 Mouse Down是鼠标按下触发的动作
+            // Mouse  Click就是按下又抬起的动作
+            that.mask && that.mask.bind("mousedown", function (e) {
+                var target = e.target || window.event.srcElement
+                if (target == that.mask[0]) {
+                    that.close();
+                }
             });
 
             return this;
@@ -257,8 +311,8 @@ define(function (require) {
 
         _html: function (config) {
             var _html = '<div class="dialog-outer" data-alert="alert">' +
-                '<div class="dialog-title">' +
-                '<span>对话框</span>' +
+                '<div class="dialog-title-wrap">' +
+                '<span class="dialog-title"></span>' +
                 '<span class="dialog-close">&times;</span>' +
                 '</div>' +
                 '<div class="dialog-content">内容</div>' +

@@ -38,9 +38,9 @@ native dialog analysis
 	    [].slice.call(arguments)	// IE8 COM对象非DOM对象 
 		
 #C.文档对象类型 
-	##8.DOM与COM-标准与IE8-
+	    8.DOM与COM-标准与IE8-
 	
-	###8.1 事件监听器 addEventListener和attachEvent
+	    8.1 事件监听器 addEventListener和attachEvent
 		// 标准
 		ele.addEventLisnter(type, function(event){
 			callback.call(ele, event)
@@ -50,17 +50,18 @@ native dialog analysis
 			callback.call(ele, window.event)
 		});
 	
-	###8.2 取消事件冒泡
+	    8.2 取消事件冒泡
 		event.stopPropation(); // 标准
 		window.event.cancelBubble = true; // IE8-
 		
-	###8.3 取消默认事件
+	    8.3 取消默认事件
 		event.preventDefault(); // 标准
 		window.event.returnValue = false; // IE8-
 		
 #D.Window对象
-	#9.Window对象
-		##9.1 scollTop
+	    9.Window对象
+	    
+		9.1 scollTop
 		self == window.self;
 		document.defaultView.pageYOffset // 标准
 		document.parentWindow.pageYOffset //IE 
