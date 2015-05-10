@@ -3,9 +3,9 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
-    <link rel="stylesheet" href="css/bootstrap-3.3.0.css"/>
-    <script src="../lib/jquery.js"></script>
-    <script src="../lib/jquery.tmpl.js"></script>
+     <!-- <link rel="stylesheet" href="css/bootstrap-3.3.0.css"/>
+  <script src="../lib/jquery.js"></script>
+    <script src="../lib/jquery.tmpl.js"></script>-->
 
 </head>
 <body>
@@ -73,7 +73,21 @@
         });
         return nextPromise;
     };
+	
+	// 如果整个操作已经完成了 那 then 方法送进的事务会被立即执行	
 
+	Promise.prototype._fire = function (nextPromise, nextAffair) {
+		var nextResult = nextAffair(this.resulte);
+		if (nextResult instanceof Promise) {
+			nextResult.then(function (obj) {
+				nextPromise.resolve(obj);
+			});
+		} else {
+			
+			nextPromise.resolve(nextResult);
+		}
+		return nextPromise;
+	};
 
 
 
@@ -83,7 +97,9 @@
 
 <script>
     // Dom ready
-    $(document).ready( function () {
+    /*
+	$(document).ready( function () {
+		return false;
         // 获取模版
         $.get("./jq-template.tpl", function (tpl) {
             // 获取数据
@@ -94,7 +110,257 @@
             });
         });
     });
+	*/
 
+	
+	
+	
+</script>
+<script>
+
+/*
+
+var Promise = function(affair){
+    this.state = 'pending';
+    this.affair = affair || function(obj) { return obj; };
+    this.allAffairs = [];
+};
+Promise.prototype = {
+    resolve: function(obj){
+        if (this.state != 'pending') throw '已完成，不能再次resolve';
+        this.state = 'resloved';
+        this.result = this.affair(obj); // 执行ok
+
+        for (var i=0, len=this.allAffairs.length; i<len; ++i){
+            // 依次调用该任务的后续任务
+            var affair = this.allAffairs[i];
+            this._fire(affair.promise, affair.affair);
+        }
+        return this;
+    },
+    _fire: function(nextPromise, nextAffair){
+        var nextResult = nextAffair(this.result); // 调用nextAffair
+
+        if (nextResult instanceof Promise){
+            // 异步的情况，返回值是一个Promise，则当其resolve的时候，nextPromise才会被resolve
+            nextResult.then(function(obj){
+                nextPromise.resolve(obj);
+            });
+        }else{
+            // 同步的情况，返回值是普通结果，立即将nextPromise给resolve掉
+            nextPromise.resolve(nextResult);
+        }
+        return nextPromise;
+    },
+    _push: function(nextPromise, nextAffair){
+        this.allAffairs.push({
+            promise: nextPromise,
+            affair: nextAffair
+        });
+        return nextPromise;
+    },
+    then: function(nextAffair){
+        var promise = new Promise();
+        if (this.state == 'resloved'){
+            // 如果当前状态是已完成，则nextAffair会被立即调用
+            return this._fire(promise, nextAffair);
+        }else{
+            // 否则将会被加入队列中
+            return this._push(promise, nextAffair);
+        }
+    }
+};
+
+
+// ss
+// Promise 无错误控制
+
+var promise = new Promise(function(data){
+	console.log(data);
+	return 1;
+});
+promise.then(function(data){
+	return (function(data){
+		var promise = new Promise();
+
+		setTimeout(function(){
+			console.log(data);
+
+			promise.resolve(2);
+		}, 1000);
+
+		return promise;
+	})(data);
+
+}).then(function(data){
+	return (function(data){
+		var promise = new Promise();
+
+		setTimeout(function(){
+			console.log(data);
+
+			promise.resolve(3);
+		}, 1000);
+
+		return promise;
+	})(data);
+}).then(function(data){
+    return (function(data){
+		var promise = new Promise();
+
+		setTimeout(function(){
+			console.log(data);
+    		console.log("end");
+
+			promise.resolve(3);
+		}, 1000);
+
+		return promise;
+	})(data);
+});
+
+promise.resolve("start");
+*/
+
+// ss
+
+// Promise 同浏览器接口，控制台输出
+
+function Promise(resolver){
+    this.status = "pending";
+    this.value = null;
+    this.handlers = [];
+    this._doPromise.call(this, resolver);
+}
+
+Promise.prototype = {
+    constructor: Promise,
+    _doPromise: function(resolver){
+        var called = false, self = this;
+        try{
+            resolver(function(value){
+                !called && (called = !0, self.resolve(value));
+            }, function(reason){
+                !called && (called = !0, self.reject(reason));
+            });
+        } catch(e) {
+            !called && (called = !0, self.reject(e));
+        }
+    },
+    resolve: function(value) {
+        try{
+            if(this === value){
+                throw new TypeError("Promise connot be resolved by itself.");
+            } else {
+                value && value.then && this._doPromise(value.then);
+            }
+            this.status = "fulfilled";
+            this.value = value;
+            this._dequeue();
+        } catch(e) {
+            this.reject(e);
+        }
+    },
+    reject: function(reason) {
+        this.status = "rejected";
+        this.value = reason;
+        this._dequeue();
+    },
+    _dequeue: function(){
+        var handler;
+        while (this.handlers.length) {
+            handler = this.handlers.shift();
+            this._handle(handler.thenPromise, handler.onFulfilled, handler.onRejected);
+        }
+    },
+    _handle: function(thenPromise, onFulfilled, onRejected){
+        var self = this;
+
+        setTimeout(function() {
+            var callback = self.status == "fulfilled" ? onFulfilled : onRejected;
+
+            if (typeof callback === 'function') {
+                try {
+                    self.resolve.call(thenPromise, callback(self.value));
+                } catch(e) {
+                    self.reject.call(thenPromise, e);
+                }
+                return;
+            }
+
+            self.status == "fulfilled" ? self.resolve.call(thenPromise, self.value) 
+                             : self.reject.call(thenPromise, self.value);
+        }, 1);
+    },
+    then: function(onFulfilled, onRejected){
+        var thenPromise = new Promise(function() {});
+
+        if (this.status == "pending") {
+            this.handlers.push({
+                thenPromise: thenPromise,
+                onFulfilled: onFulfilled,
+                onRejected: onRejected
+            });
+        } else {
+            this._handle(thenPromise, onFulfilled, onRejected);
+        }
+
+        return thenPromise;
+    }
+};
+
+var p = new Promise(function(resolve, reject){
+    resolve(1);
+}).then(function(data){
+    console.log(data);
+    throw 3;
+}).then(function(){
+
+}, function(err){
+    console.log(err);
+    return 4;
+}).then(function(data){
+    console.log(data)
+    throw 2;
+})
+</script>
+
+<hr/>
+
+<h1><button onclick="testPromise()">button</button></h1>
+<h2 id="log">AAA</h2>
+<script>
+var promiseCount = 0;
+function testPromise() {
+  var thisPromiseCount = ++promiseCount;
+
+  var log = document.getElementById('log');
+  log.insertAdjacentHTML('beforeend', thisPromiseCount + ') 开始(同步代码开始)<br>');
+
+  // 我们创建一个新的promise: 然后用'result'字符串解决这个promise (3秒后)
+  var p1 = new Promise(
+    // 解决函数带着解决（resolve）或拒绝（reject）promise的能力被执行
+    function(resolve, reject) {       
+      log.insertAdjacentHTML('beforeend', thisPromiseCount + ') Promise开始(异步代码开始)<br>');
+
+      // 这只是个创建异步解决的示例
+      window.setTimeout(
+        function() {
+          // 我们满足（fullfil）了这个promise!
+          resolve(thisPromiseCount)
+        }, Math.random() * 2000 + 1000);
+    });
+
+  // 定义当promise被满足时应做什么
+  p1.then(
+    // 输出一段信息和一个值
+    function(val) {
+      log.insertAdjacentHTML('beforeend', val +') Promise被满足了(异步代码结束)<br>'
+        );
+    });
+
+  log.insertAdjacentHTML('beforeend', thisPromiseCount +  ') 建立了Promise(同步代码结束)<br>');
+}
 </script>
 
 <hr/>
