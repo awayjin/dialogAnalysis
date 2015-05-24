@@ -59,11 +59,25 @@ then回调返回，
 	
 */
 getJSON("data.json").then(function (data) {
-	return getJSON(data.url);
+	return getJSON(data.dataUrl[0]);
 }).then(function (employees) {
 	console.log("Step-4:", employees)
 });
 
+// step-5 Promise相较于回调的优越性
+var dataPromise;
+function getData(i) {
+	dataPromise	= dataPromise || getJSON("data.json");
+	return dataPromise.then(function (data) {
+		return getJSON(data.dataUrl)[i];
+	});
+}
+getData(0).then(function (data) {
+	console.log("step-5-1:"+data);
+	return getData(1)
+}).then(function (data) {
+	console.log("step-5-2:"+data);
+})
 
 </script>
 
