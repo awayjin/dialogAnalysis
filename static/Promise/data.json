@@ -1,0 +1,9 @@
+
+
+   {
+	 "url": "data.json",
+	 "employees": [
+       {"name": "away", "age": 20},
+       {"name": "jan", "age": 30}
+	]
+   }
