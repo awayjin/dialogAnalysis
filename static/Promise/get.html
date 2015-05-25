@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<!--<script src="../js/jquery.js"></script>-->
+</head>
+<body>
+http://segmentfault.com/a/1190000000363893?_ea=189799#articleHeader17
+<script>
+var get = function (url) {
+	return new Promise(function (resolve, reject) {
+		var xhr = new XMLHttpRequest();
+		xhr.open("get", url);
+		xhr.onload = function () {
+			if (xhr.status == 200) {
+				resolve(xhr.response);
+			} else {
+				reject(Error(xhr.responseText));
+			}
+		};
+		xhr.send(null);
+	});
+};
+
+// step-1 ajax get
+get("data.json").then(function (response) {
+	console.log("Success:", response);
+}, function (error) {
+	console.log("Failed:", error);
+});
+
+
+// step-2
+var p1 = new Promise(function (resolve, reject) {
+	resolve(1);
+});
+p1.then(function (val) {
+	console.log(val);
+	return val+2;
+}).then(function (val) {
+	console.log(val);
+});
+
+// step-3 json
+get("data.json").then(JSON.parse).then(function (response) {
+	console.log("Step-3 JSON key:" + response);
+});
+
+// getJSON
+function getJSON(url) {
+	return get(url).then(JSON.parse);
+}
+
+// step-4
+/* 
+then回调返回，
+如果返回一个值，传递到给下一个then回调
+如果返回一个"类 Promise"对象，则下一个then等待这个Promise明确结束(成功或结束)，才会招行
+	
+*/
+getJSON("data.json").then(function (data) {
+	return getJSON(data.dataUrl[0]);
+}).then(function (employees) {
+	console.log("Step-4:", employees)
+});
+
+// step-5 Promise相较于回调的优越性
+var dataPromise;
+function getData(i) {
+	dataPromise	= dataPromise || getJSON("data.json");
+	return dataPromise.then(function (data) {
+		return getJSON(data.dataUrl)[i];
+	});
+}
+getData(0).then(function (data) {
+	console.log("step-5-1:"+data);
+	return getData(1)
+}).then(function (data) {
+	console.log("step-5-2:"+data);
+})
+
+</script>
+
+<input type="text" >
+<input type="text" autofocus="autofocus" >
+</body>
+</html>
