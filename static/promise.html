@@ -368,9 +368,10 @@ function testPromise() {
     function(val) {
       log.insertAdjacentHTML('beforeend', val +') 3Promise被满足了(异步代码结束)<br>'
         );
-    });
+  });
 
-  log.insertAdjacentHTML('beforeend', thisPromiseCount +  ') 4建立了Promise(同步代码结束)<br>');
+   log.insertAdjacentHTML('beforeend', thisPromiseCount +  ') 4建立了Promise(同步代码结束)<br>');
+
 }
 </script>
 
