@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script>
+    function get(url) {
+       return new Promise(function (resolve, reject) {
+           var xhr = new XMLHttpRequest();
+           xhr.onload = function () {
+               if (xhr.status == 200) {
+                   resolve(xhr.response)
+               } else {
+                   reject(Error(xhr.response))
+               }
+           };
+           xhr.onerror = function () {
+               reject(Error("Net Work."))
+           };
+           xhr.open("get", url);
+           xhr.send(null);
+       });
+    }
+
+    // step-2
+    get("data.json2").then(function (response) {
+        console.log("step-2-1:" + response);
+    }, function (error) {
+        console.log("step-2-2:" + error);
+    })
+
+</script>
+</body>
+</html>

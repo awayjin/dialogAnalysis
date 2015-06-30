@@ -1,11 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8"/>
     <title></title>
 	<!--<script src="../js/jquery.js"></script>-->
 </head>
 <body>
-http://segmentfault.com/a/1190000000363893?_ea=189799#articleHeader17
+<a href="http://segmentfault.com/a/1190000000363893?_ea=189799#articleHeader17">Promise</a>
+
+<img src="images" class="img-1">
+<img src="http://i04.c.aliimg.com/img/ibank/2014/592/502/1904205295_351256096.jpg" class="img-1">
+<script>
+    var img1 = document.querySelector(".img-1");
+
+    img1.addEventListener("load", function () {
+        alert("load")
+    });
+
+    img1.addEventListener("error", function (d) {
+        alert(Error(d))
+    });
+</script>
+
 <script>
 var get = function (url) {
 	return new Promise(function (resolve, reject) {
